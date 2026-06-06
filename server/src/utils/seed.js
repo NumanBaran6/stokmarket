@@ -177,6 +177,28 @@ export const seedDatabase = async () => {
       stock: 118,
       imageUrl: '/images/nar.jpg',
     },
+    {
+      name: 'Avokado',
+      description: 'Yağlı, kremamsı avokado. Yaklaşık 4 kg kasa.',
+      category: meyve._id,
+      price: 380,
+      vipPrice: 350,
+      unit: 'kasa',
+      moq: 8,
+      stock: 73,
+      imageUrl: '/images/avokado.jpg',
+    },
+    {
+      name: 'Erik',
+      description: 'Sulu, tatlı erik. Yaklaşık 10 kg kasa.',
+      category: meyve._id,
+      price: 300,
+      vipPrice: 275,
+      unit: 'kasa',
+      moq: 10,
+      stock: 91,
+      imageUrl: '/images/erik.jpg',
+    },
 
     // ----- SEBZE -----
     {

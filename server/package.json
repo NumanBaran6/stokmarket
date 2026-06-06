@@ -9,6 +9,9 @@
     "dev": "nodemon src/index.js",
     "seed": "node src/utils/seed.js"
   },
+  "engines": {
+    "node": ">=18"
+  },
   "keywords": [
     "mern",
     "b2b",

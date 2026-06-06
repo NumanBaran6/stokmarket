@@ -14,11 +14,12 @@ const app = express();
 
 // --- Genel middleware'ler ---
 
-// CORS: yalnızca tanımlı frontend adresine izin ver (gerekirse genişletilebilir)
+// CORS: CLIENT_URL tanımlıysa yalnızca ona, değilse tüm kaynaklara izin ver.
+// Kimlik doğrulama JWT başlığı ile yapıldığından çereze (credentials) gerek yok;
+// böylece '*' origin ile de sorunsuz çalışır.
 app.use(
   cors({
     origin: process.env.CLIENT_URL || '*',
-    credentials: true,
   })
 );
 
