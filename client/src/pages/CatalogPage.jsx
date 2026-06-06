@@ -5,6 +5,7 @@ import ProductCard from '../components/ProductCard.jsx';
 import ReminderBanner from '../components/ReminderBanner.jsx';
 import Spinner from '../components/Spinner.jsx';
 import EmptyState from '../components/EmptyState.jsx';
+import { Logo } from '../components/Logo.jsx';
 
 /**
  * Anasayfa / Ürün kataloğu.
@@ -54,11 +55,15 @@ const CatalogPage = () => {
     <div className="container">
       {isAuthenticated && user?.role === 'customer' && <ReminderBanner />}
 
-      <section className="hero">
-        <h1>Taze Meyve & Sebze Kataloğu</h1>
-        <p>
-          Manav tezgâhını tazele. Kasa, çuval ve kg bazında sipariş ver, teslimat gününü seç,
-          {user?.tier === 'vip' ? ' VIP bayi fiyatlarından yararlan.' : ' otomatik faturanı al.'}
+      <section className="hero hero--center">
+        <Logo size={88} />
+        <h1 className="hero__brand">Numan Gıda</h1>
+        <p className="hero__tagline">Tarladan en taze haliyle...</p>
+        <p className="hero__sub">
+          Sabahın ilk ışığında halden seçtiğimiz meyve ve sebzeler, aynı gün tezgâhınızda.
+          Aradan komisyoncuyu çıkardık; doğrudan üreticiden, dalından koparılmış tazelikte
+          kasanıza geliyor.
+          {user?.tier === 'vip' ? ' VIP bayi fiyatlarınız aktif.' : ''}
         </p>
       </section>
 

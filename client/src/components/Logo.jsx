@@ -12,36 +12,45 @@ export const Logo = ({ size = 44 }) => (
     xmlns="http://www.w3.org/2000/svg"
     aria-hidden="true"
   >
-    {/* Yaprak biçimli yeşil çember (sağdan açık, C/yaprak görünümü) */}
+    {/* Turuncu narenciye gövdesi */}
+    <circle cx="50" cy="60" r="33" fill="#f4951d" />
+    {/* Sağ tarafta açık ton (hacim hissi) */}
     <path
-      d="M76 22 A40 40 0 1 0 80 76"
-      stroke="#6cb52d"
-      strokeWidth="9"
+      d="M50 27 A33 33 0 0 1 50 93 A33 33 0 0 0 50 27 Z"
+      fill="#f8b133"
+    />
+    {/* Üstteki turuncu dilimi ayıran açık yay */}
+    <path
+      d="M22 51 C40 43 64 43 81 52"
+      stroke="#fffdf7"
+      strokeWidth="4.5"
       strokeLinecap="round"
     />
-    {/* Çemberin alt-sağ ucundaki büyük yaprak */}
+    {/* Ortadaki yeşil yaprak bandı */}
     <path
-      d="M80 76 C88 66 90 52 84 42 C76 50 74 64 80 76 Z"
-      fill="#4f9d28"
-    />
-
-    {/* Elma gövdesi */}
-    <path
-      d="M50 38 C43 31 31 34 31 47 C31 61 40 72 50 72 C60 72 69 61 69 47 C69 34 57 31 50 38 Z"
-      fill="#d8281c"
-    />
-    {/* Elma üzerindeki açık ton (parlama) */}
-    <path
-      d="M40 44 C36 49 36 58 40 65 C36 60 34 50 40 44 Z"
-      fill="#ef5a4e"
-    />
-    {/* Sap */}
-    <path d="M50 38 L48 29" stroke="#6b4a2b" strokeWidth="3" strokeLinecap="round" />
-    {/* Elmanın üstündeki yaprak */}
-    <path
-      d="M50 37 C53 27 62 23 71 26 C67 35 59 40 50 37 Z"
+      d="M21 54 C42 49 64 50 82 58 C64 61 42 62 21 60 Z"
       fill="#5bb02a"
     />
+    <path
+      d="M21 54 C42 49 64 50 82 58"
+      stroke="#4a9223"
+      strokeWidth="1.4"
+      fill="none"
+    />
+    {/* Yeşil bandın altındaki açık ayraç */}
+    <path
+      d="M24 64 C42 61 62 63 78 67"
+      stroke="#fffdf7"
+      strokeWidth="3.5"
+      strokeLinecap="round"
+    />
+    {/* Üstteki yaprak */}
+    <path
+      d="M55 26 C49 14 58 4 70 7 C67 21 61 27 55 26 Z"
+      fill="#6cbb2e"
+    />
+    {/* Yaprak sapı */}
+    <path d="M53 27 C51 21 51 16 54 12" stroke="#4a9223" strokeWidth="3" strokeLinecap="round" fill="none" />
   </svg>
 );
 
