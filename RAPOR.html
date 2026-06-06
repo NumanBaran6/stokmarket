@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Numan Gıda — Proje Raporu</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+</script>
+<style>
+  :root { --green:#2f6b3f; --ink:#1f2933; --muted:#667; --line:#dcd7ca; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, Arial, sans-serif;
+    color: var(--ink); line-height: 1.6; margin: 0;
+    background: #f3f1ea;
+  }
+  .page {
+    background: #fff; max-width: 820px; margin: 24px auto; padding: 48px 56px;
+    box-shadow: 0 2px 16px rgba(0,0,0,.08);
+  }
+  h1,h2,h3 { font-family: Georgia, 'Times New Roman', serif; color: var(--green); line-height:1.25; }
+  h1 { font-size: 2rem; margin: 0 0 .2em; }
+  h2 { font-size: 1.4rem; margin-top: 2em; border-bottom: 2px solid var(--green); padding-bottom: .2em; }
+  h3 { font-size: 1.1rem; margin-top: 1.4em; color:#234f2e; }
+  a { color: var(--green); }
+  code { background:#f0ede3; padding: 1px 5px; border-radius: 3px; font-size: .9em; }
+  pre { background:#f7f5ee; border:1px solid var(--line); padding: 12px 14px; overflow-x:auto; border-radius:4px; font-size:.85rem; }
+  table { width:100%; border-collapse: collapse; margin: 1em 0; font-size:.92rem; }
+  th,td { border:1px solid var(--line); padding:7px 10px; text-align:left; vertical-align:top; }
+  th { background: var(--green); color:#fff; font-family: inherit; }
+  tr:nth-child(even) td { background:#faf8f2; }
+  .cover { text-align:center; padding: 80px 0 40px; }
+  .cover .logo { width: 96px; height:96px; margin: 0 auto 16px; display:block; }
+  .cover h1 { font-size: 2.6rem; border:none; }
+  .cover .sub { font-size:1.2rem; color:var(--muted); font-style:italic; margin-top:.2em; }
+  .cover .meta { margin-top: 48px; display:inline-block; text-align:left; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:18px 28px; }
+  .cover .meta div { margin:4px 0; }
+  .cover .meta b { display:inline-block; width:170px; color:var(--green); }
+  .muted { color: var(--muted); }
+  .mermaid { background:#fff; text-align:center; margin: 1em 0; }
+  ul.feat li { margin:.3em 0; }
+  @media print {
+    body { background:#fff; }
+    .page { box-shadow:none; margin:0; max-width:none; padding: 0 12mm; }
+    h2 { page-break-after: avoid; }
+    table, pre, .mermaid, img { page-break-inside: avoid; }
+    .page-break { page-break-before: always; }
+    a { color: var(--ink); text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- KAPAK -->
+  <div class="cover">
+    <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="60" r="33" fill="#f4951d"/>
+      <path d="M50 27 A33 33 0 0 1 50 93 A33 33 0 0 0 50 27 Z" fill="#f8b133"/>
+      <path d="M22 51 C40 43 64 43 81 52" stroke="#fffdf7" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+      <path d="M21 54 C42 49 64 50 82 58 C64 61 42 62 21 60 Z" fill="#5bb02a"/>
+      <path d="M24 64 C42 61 62 63 78 67" stroke="#fffdf7" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+      <path d="M55 26 C49 14 58 4 70 7 C67 21 61 27 55 26 Z" fill="#6cbb2e"/>
+      <path d="M53 27 C51 21 51 16 54 12" stroke="#4a9223" stroke-width="3" stroke-linecap="round" fill="none"/>
+    </svg>
+    <h1>Numan Gıda</h1>
+    <div class="sub">Taze Meyve &amp; Sebze Toptan Sipariş Platformu</div>
+    <p class="muted" style="margin-top:24px">MERN Stack Full-Stack Web Uygulaması — Dönem Projesi</p>
+
+    <div class="meta">
+      <div><b>Ad Soyad</b> Numan Baran</div>
+      <div><b>Üniversite</b> Rumeli Üniversitesi</div>
+      <div><b>Sınıf</b> 3. Sınıf</div>
+      <div><b>Öğrenci No</b> 231201048</div>
+      <div><b>Ders</b> BLG330 — Web Programlama</div>
+      <div><b>Tarih</b> Haziran 2026</div>
+    </div>
+  </div>
+
+  <h2>1. Proje Özeti</h2>
+  <p>
+    <b>Numan Gıda</b>, perakendecilerin bir toptancıdan taze meyve ve sebze siparişi
+    verebildiği B2B bir web uygulamasıdır. Sistem; minimum sipariş miktarı kuralı,
+    VIP bayilere özel fiyatlandırma, teslimat günü seçimi ve otomatik fatura üretimi gibi
+    gerçek bir toptan satış senaryosunun ihtiyaçlarını karşılar.
+  </p>
+  <p>
+    Uygulama MERN Stack mimarisi olan MongoDB, Express.js, React.js ve Node.js teknolojileriyle
+    geliştirilmiştir. Hem sunucu hem istemci tarafında çalışan, veritabanı destekli ve JWT
+    tabanlı kimlik doğrulama içeren tam yığın bir yapıya sahiptir.
+  </p>
+
+  <h3>Canlı Adresler</h3>
+  <table>
+    <tr><th>Bileşen</th><th>Adres</th></tr>
+    <tr><td>Web Sitesi</td><td><a href="https://stokmarket.vercel.app">https://stokmarket.vercel.app</a></td></tr>
+    <tr><td>API</td><td><a href="https://numangida-api.onrender.com/api/health">https://numangida-api.onrender.com</a></td></tr>
+    <tr><td>Kaynak Kod</td><td><a href="https://github.com/NumanBaran6/stokmarket">github.com/NumanBaran6/stokmarket</a></td></tr>
+  </table>
+
+  <h3>Demo Hesapları</h3>
+  <p class="muted">Tüm hesapların şifresi: 123456</p>
+  <table>
+    <tr><th>Rol</th><th>E-posta</th><th>Yetki</th></tr>
+    <tr><td>Yönetici</td><td>admin@numangida.com</td><td>Ürün ve kategori yönetimi, tüm siparişler</td></tr>
+    <tr><td>VIP Bayi</td><td>vip@numangida.com</td><td>İndirimli VIP fiyatlarıyla sipariş</td></tr>
+    <tr><td>Standart Bayi</td><td>bayi@numangida.com</td><td>Normal fiyatlarla sipariş</td></tr>
+  </table>
+
+  <h2>2. Kullanılan Teknolojiler</h2>
+  <table>
+    <tr><th>Katman</th><th>Teknolojiler</th></tr>
+    <tr><td>Frontend</td><td>React 18, React Router 6, Vite, Axios, Context API, özgün responsive CSS</td></tr>
+    <tr><td>Backend</td><td>Node.js, Express.js 4, MVC mimarisi</td></tr>
+    <tr><td>Veritabanı</td><td>MongoDB Atlas, Mongoose 8</td></tr>
+    <tr><td>Kimlik Doğrulama</td><td>JWT, bcryptjs ile şifre hashleme</td></tr>
+    <tr><td>Yardımcı</td><td>CORS, morgan, dotenv, multer</td></tr>
+    <tr><td>Dağıtım</td><td>Vercel, Render, MongoDB Atlas</td></tr>
+    <tr><td>Versiyon Kontrol</td><td>Git ve GitHub</td></tr>
+  </table>
+
+  <h2>3. Sistem Mimarisi</h2>
+  <p>
+    Proje üç katmanlı bir mimariye sahiptir: İstemci tarafında React, sunucu tarafında
+    Express API ve veri katmanında MongoDB. Backend tarafında MVC benzeri bir yapı
+    kullanılmıştır; rotalar, iş mantığı ve veri modelleri ayrı katmanlara bölünmüştür.
+  </p>
+
+  <h3>Proje Klasör Yapısı</h3>
+<pre>
+.
+├── server/                  # Backend - Node + Express
+│   └── src/
+│       ├── config/          # Veritabanı bağlantısı
+│       ├── controllers/     # İş mantığı
+│       ├── middleware/      # Kimlik, hata yönetimi, dosya yükleme
+│       ├── models/          # Mongoose şemaları
+│       ├── routes/          # API router'ları
+│       ├── utils/           # JWT üretimi, seed
+│       ├── app.js           # Express uygulaması
+│       └── index.js         # Sunucu giriş noktası
+│
+├── client/                  # Frontend - React + Vite
+│   └── src/
+│       ├── api/             # axios örneği
+│       ├── components/      # Yeniden kullanılabilir bileşenler
+│       ├── context/         # AuthContext, CartContext, ToastContext
+│       ├── pages/           # Sayfalar
+│       ├── styles/          # Özgün responsive CSS
+│       └── utils/           # Biçimlendirme yardımcıları
+│
+├── docs/                    # UML diyagramları
+└── README.md
+</pre>
+
+  <div class="page-break"></div>
+  <h2>4. Backend</h2>
+  <p>
+    RESTful API tasarımı uygulanmış; tüm HTTP metotları olan GET, POST, PUT ve DELETE
+    kullanılmıştır. Modüler router yapısı, merkezi hata yönetimi, istek loglama, CORS ve
+    <code>.env</code> ile yapılandırma yönetimi mevcuttur.
+  </p>
+
+  <h3>API Endpoint'leri</h3>
+  <table>
+    <tr><th>Metot</th><th>Yol</th><th>Erişim</th><th>Açıklama</th></tr>
+    <tr><td>POST</td><td>/api/auth/register</td><td>Herkese açık</td><td>Bayi kaydı</td></tr>
+    <tr><td>POST</td><td>/api/auth/login</td><td>Herkese açık</td><td>Giriş, JWT döner</td></tr>
+    <tr><td>GET</td><td>/api/auth/me</td><td>Korumalı</td><td>Profil bilgisi</td></tr>
+    <tr><td>GET</td><td>/api/products</td><td>Herkese açık</td><td>Ürün listeleme, arama ve filtre</td></tr>
+    <tr><td>GET</td><td>/api/products/:id</td><td>Herkese açık</td><td>Ürün detayı</td></tr>
+    <tr><td>POST</td><td>/api/products</td><td>Yönetici</td><td>Ürün ekleme</td></tr>
+    <tr><td>PUT</td><td>/api/products/:id</td><td>Yönetici</td><td>Ürün güncelleme</td></tr>
+    <tr><td>DELETE</td><td>/api/products/:id</td><td>Yönetici</td><td>Ürün silme</td></tr>
+    <tr><td>GET / POST / PUT / DELETE</td><td>/api/categories</td><td>Liste herkese, yazma Yönetici</td><td>Kategori CRUD</td></tr>
+    <tr><td>GET</td><td>/api/orders</td><td>Korumalı</td><td>Siparişleri listeleme</td></tr>
+    <tr><td>POST</td><td>/api/orders</td><td>Bayi</td><td>Sipariş oluşturma, MOQ ve stok kontrolü</td></tr>
+    <tr><td>PUT</td><td>/api/orders/:id/status</td><td>Yönetici</td><td>Sipariş durumu güncelleme</td></tr>
+    <tr><td>DELETE</td><td>/api/orders/:id</td><td>Korumalı</td><td>Sipariş iptal etme</td></tr>
+    <tr><td>POST</td><td>/api/upload</td><td>Yönetici</td><td>Ürün görseli yükleme</td></tr>
+  </table>
+
+  <h3>Middleware Kullanımı</h3>
+  <ul>
+    <li><b>CORS</b> — yalnızca canlı frontend adresine izin verir.</li>
+    <li><b>morgan</b> — HTTP isteklerini loglar.</li>
+    <li><b>protect</b> — JWT doğrulayan kimlik kontrol middleware'i.</li>
+    <li><b>authorize</b> — rol tabanlı yetkilendirme.</li>
+    <li><b>errorHandler</b> — merkezi, anlamlı hata mesajları üreten yapı.</li>
+  </ul>
+
+  <h2>5. Veritabanı</h2>
+  <p>
+    Mongoose ile 4 farklı model tanımlanmıştır: User, Category, Product ve Order.
+    Modeller arası ilişkiler <code>ref</code> ve <code>populate</code> ile kurulmuş, veri
+    doğrulama kuralları şemalarda uygulanmıştır. Tüm CRUD işlemleri eksiksizdir.
+  </p>
+
+  <h3>ER Diyagramı</h3>
+  <div class="mermaid">
+erDiagram
+    USER ||--o{ ORDER : "verir"
+    CATEGORY ||--o{ PRODUCT : "icerir"
+    PRODUCT ||--o{ ORDER_ITEM : "yer alir"
+    ORDER ||--|{ ORDER_ITEM : "kalemlerden olusur"
+    USER {
+        ObjectId _id PK
+        string name
+        string email UK
+        string password
+        string shopName
+        string role
+        string tier
+    }
+    CATEGORY {
+        ObjectId _id PK
+        string name UK
+        string description
+    }
+    PRODUCT {
+        ObjectId _id PK
+        string name
+        ObjectId category FK
+        number price
+        number vipPrice
+        string unit
+        number moq
+        number stock
+    }
+    ORDER {
+        ObjectId _id PK
+        ObjectId customer FK
+        number totalAmount
+        string deliveryDay
+        string invoiceNumber UK
+        string status
+    }
+    ORDER_ITEM {
+        ObjectId product FK
+        number quantity
+        number priceAtOrder
+    }
+  </div>
+
+  <div class="page-break"></div>
+  <h2>6. Frontend</h2>
+  <p>
+    Bileşen tabanlı mimari ile 11'den fazla yeniden kullanılabilir bileşen ve React Router
+    ile 9 farklı sayfa geliştirilmiştir. State yönetimi <code>useState</code>,
+    <code>useEffect</code> ve <code>useContext</code> ile yapılır; üç ayrı context olan
+    Auth, Cart ve Toast uygulamayı yönetir. Tüm tasarım mobil, tablet ve masaüstü uyumludur.
+  </p>
+
+  <h3>Bileşenler ve Sayfalar</h3>
+  <table>
+    <tr><th>Bileşenler</th><th>Sayfalar</th></tr>
+    <tr><td>Navbar, Footer, ProtectedRoute</td><td>Katalog</td></tr>
+    <tr><td>ProductCard, Modal, Spinner</td><td>Ürün Detay</td></tr>
+    <tr><td>Toast, StatusBadge, EmptyState</td><td>Giriş ve Kayıt</td></tr>
+    <tr><td>FormField, ReminderBanner, Logo</td><td>Sepet</td></tr>
+    <tr><td></td><td>Siparişlerim ve Sipariş Detay</td></tr>
+    <tr><td></td><td>Yönetim Paneli</td></tr>
+  </table>
+
+  <h3>Kullanıcı Deneyimi</h3>
+  <ul>
+    <li>Loading spinner, toast bildirimleri ve modal pencereler</li>
+    <li>Giriş, kayıt ve ürün ekleme formlarında istemci tarafı validasyon</li>
+    <li>Axios interceptor ile her isteğe otomatik JWT eklenmesi</li>
+    <li>Sepette miktarın minimum sipariş miktarının altına inememesi ve stoğu aşamaması</li>
+  </ul>
+
+  <h2>7. Kimlik Doğrulama ve Yetkilendirme</h2>
+  <ul>
+    <li>JWT tabanlı kimlik doğrulama; giriş sonrası token üretilir ve istemcide saklanır.</li>
+    <li>bcryptjs ile şifreler veritabanına hash'lenerek kaydedilir, düz metin tutulmaz.</li>
+    <li>Korumalı rotalar hem backend hem frontend tarafında uygulanmıştır.</li>
+    <li>Rol tabanlı erişim kontrolü; yönetici ve bayi rolleri ayrı yetkilere sahiptir.</li>
+  </ul>
+
+  <h2>8. Öne Çıkan Özellikler</h2>
+  <ul class="feat">
+    <li><b>Minimum Sipariş Miktarı:</b> Her ürün için en az belirli bir kasa, çuval veya kg kuralı hem arayüzde hem sunucuda zorunlu kılınır.</li>
+    <li><b>VIP Bayi Fiyatları:</b> VIP bayilere ürün bazında indirimli fiyat sunulur ve fiyat sunucu tarafında belirlenir.</li>
+    <li><b>Teslimat Günü Seçimi:</b> Sipariş verirken haftanın teslimat günü seçilir.</li>
+    <li><b>Otomatik Fatura:</b> Sipariş onaylanınca benzersiz fatura numarası üretilir.</li>
+    <li><b>Haftalık Sipariş Hatırlatması:</b> Hafta başında bayilere hatırlatma afişi gösterilir.</li>
+    <li><b>Stok Yönetimi:</b> Sipariş verilince stok düşer, iptal edilince geri eklenir.</li>
+    <li><b>Görsel Yükleme:</b> Yönetim panelinden ürün görseli dosya olarak yüklenebilir.</li>
+  </ul>
+
+  <div class="page-break"></div>
+  <h2>9. UML Diyagramları</h2>
+
+  <h3>9.1 Use-Case Diyagramı</h3>
+  <div class="mermaid">
+flowchart LR
+    Z(["Ziyaretci"]); B(["Bayi"]); A(["Yonetici"])
+    U1(["Katalogu goruntule"]); U2(["Kayit ve Giris"])
+    U3(["Sepete ekle"]); U4(["Teslimat gunu sec"])
+    U5(["Siparis olustur"]); U6(["Siparisleri goruntule"])
+    U7(["VIP fiyati kullan"]); U8(["Urun ve Kategori CRUD"])
+    U9(["Tum siparisler"])
+    Z --- U1; Z --- U2
+    B --- U1; B --- U3; B --- U4; B --- U5; B --- U6; B --- U7
+    A --- U8; A --- U9; A --- U1
+    classDef actor fill:#2f6b3f,color:#fff;
+    class Z,B,A actor;
+  </div>
+
+  <h3>9.2 Activity Diyagramı — Sipariş Oluşturma</h3>
+  <div class="mermaid">
+flowchart TD
+    S([Basla]) --> L{Giris var mi?}
+    L -->|Hayir| G[Giris sayfasi] --> L
+    L -->|Evet| Br[Katalogu gez] --> Ad[Urunu sepete ekle]
+    Ad --> M{Miktar MOQ ustunde mi?}
+    M -->|Hayir| W[Uyari] --> Ad
+    M -->|Evet| Day[Teslimat gunu sec] --> Cf[Onayla]
+    Cf --> V{Backend MOQ ve Stok}
+    V -->|Gecersiz| E[Hata mesaji] --> Day
+    V -->|Gecerli| P[Fiyati uygula]
+    P --> Inv[Fatura no uret] --> St[Stok dus] --> Save[(Kaydet)]
+    Save --> Show[Fatura goster] --> End([Bitir])
+  </div>
+
+  <h3>9.3 Component Diyagramı</h3>
+  <div class="mermaid">
+flowchart TD
+    subgraph FE["Frontend"]
+        Main[main.jsx] --> Prov[Auth Cart Toast Provider]
+        Prov --> App[App + Router]
+        App --> Pages{{Sayfalar}}
+        Pages --> Cat[Katalog]; Pages --> Cart[Sepet]; Pages --> Adm[Admin]
+        Cat --> PC[ProductCard]; Cart --> Mod[Modal]
+    end
+    subgraph API["API Katmani"]
+        Ax[axios + JWT interceptor]
+    end
+    subgraph BE["Backend"]
+        R[Routes] --> MW[Middleware] --> Ctrl[Controllers] --> Mdl[(Mongoose Models)] --> DB[(MongoDB)]
+    end
+    Cat --> Ax; Cart --> Ax; Adm --> Ax
+    Ax -->|HTTP| R
+  </div>
+
+  <div class="page-break"></div>
+  <h2>10. Canlıya Alma</h2>
+  <p>
+    Uygulama üç ayrı bulut servisi kullanılarak canlıya alınmıştır.
+  </p>
+  <table>
+    <tr><th>Katman</th><th>Servis</th><th>Adres</th></tr>
+    <tr><td>Frontend</td><td>Vercel</td><td>stokmarket.vercel.app</td></tr>
+    <tr><td>Backend API</td><td>Render</td><td>numangida-api.onrender.com</td></tr>
+    <tr><td>Veritabanı</td><td>MongoDB Atlas</td><td>Bulut cluster</td></tr>
+  </table>
+  <p>
+    Frontend'in API adresi <code>VITE_API_URL</code>, backend'in veritabanı bağlantısı
+    <code>MONGODB_URI</code> ve <code>JWT_SECRET</code> ortam değişkenleri ile yapılandırılır.
+    Her kod gönderiminden sonra Vercel ve Render otomatik olarak yeniden dağıtım yapar.
+  </p>
+
+  <h2>11. Versiyon Kontrol</h2>
+  <ul>
+    <li>Proje GitHub'da barındırılmaktadır: github.com/NumanBaran6/stokmarket</li>
+    <li>Her özellik için ayrı, anlamlı commit'ler atılmıştır.</li>
+    <li><code>.gitignore</code> ile <code>node_modules</code> ve <code>.env</code> dışlanmıştır.</li>
+    <li>Düzgün bir <code>README.md</code> dosyası mevcuttur.</li>
+  </ul>
+
+  <h2>12. Kurulum</h2>
+<pre>
+# Backend
+cd server
+npm install
+npm run dev          # http://localhost:5001
+
+# Frontend
+cd client
+npm install
+npm run dev          # http://localhost:5173
+</pre>
+
+  <div class="page-break"></div>
+  <h2>13. Ekran Görüntüleri</h2>
+
+  <h3>13.1 Katalog Sayfası</h3>
+  <p class="muted">Meyve ve sebze ürünleri; fiyat, minimum sipariş miktarı ve stok bilgisiyle.</p>
+  <img src="docs/screenshots/katalog.png" alt="Katalog sayfasi" style="width:100%; border:1px solid var(--line); border-radius:4px;" />
+
+  <h3>13.2 Sepet ve Haftalık Sipariş Listesi</h3>
+  <p class="muted">Miktar ayarlama, teslimat günü seçimi ve sipariş özeti.</p>
+  <img src="docs/screenshots/sepet.png" alt="Sepet sayfasi" style="width:100%; border:1px solid var(--line); border-radius:4px;" />
+
+  <h3>13.3 Yönetim Paneli</h3>
+  <p class="muted">Ürün listesi; fiyat, VIP fiyat, minimum sipariş ve stok bilgileriyle.</p>
+  <img src="docs/screenshots/admin.png" alt="Yonetim paneli" style="width:100%; border:1px solid var(--line); border-radius:4px;" />
+
+  <h2>14. Sonuç</h2>
+  <p>
+    Numan Gıda projesi, MERN Stack ile geliştirilmiş; backend, frontend, veritabanı ve
+    kimlik doğrulama bileşenlerinin tamamını içeren, gerçek bir B2B toptan satış senaryosunu
+    karşılayan tam yığın bir web uygulamasıdır. Proje canlı ortamda yayında olup, kaynak
+    kodu GitHub üzerinde anlamlı commit geçmişiyle birlikte erişilebilir durumdadır.
+  </p>
+
+  <p class="muted" style="margin-top:40px; text-align:center; border-top:1px solid var(--line); padding-top:16px;">
+    Numan Baran — 231201048 — Rumeli Üniversitesi — BLG330 Web Programlama — Haziran 2026
+  </p>
+
+</div>
+</body>
+</html>
