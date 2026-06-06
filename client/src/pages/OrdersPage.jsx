@@ -33,10 +33,9 @@ const OrdersPage = () => {
       <h1>{isAdmin ? 'Tüm Siparişler' : 'Siparişlerim'}</h1>
 
       {error ? (
-        <EmptyState icon="⚠️" title="Hata" message={error} />
+        <EmptyState title="Hata" message={error} />
       ) : orders.length === 0 ? (
         <EmptyState
-          icon="📦"
           title="Henüz siparişin yok"
           message="Katalogdan ürün seçip ilk haftalık siparişini oluşturabilirsin."
           action={

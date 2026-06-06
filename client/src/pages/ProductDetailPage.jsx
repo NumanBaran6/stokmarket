@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { useCart } from '../context/CartContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import Spinner from '../components/Spinner.jsx';
+import { CrateIcon } from '../components/Logo.jsx';
 import { formatTL } from '../utils/format.js';
 
 /**
@@ -56,7 +57,9 @@ const ProductDetailPage = () => {
           {product.imageUrl ? (
             <img src={product.imageUrl} alt={product.name} />
           ) : (
-            <div className="product-card__placeholder product-card__placeholder--lg">📦</div>
+            <div className="product-card__placeholder product-card__placeholder--lg">
+              <CrateIcon size={120} />
+            </div>
           )}
         </div>
 
@@ -77,10 +80,10 @@ const ProductDetailPage = () => {
           </div>
 
           <ul className="product-detail__specs">
-            <li>📦 Satış birimi: <strong>{product.unit}</strong></li>
-            <li>🔢 Minimum sipariş: <strong>{product.moq} {product.unit}</strong></li>
+            <li>Satış birimi: <strong>{product.unit}</strong></li>
+            <li>Minimum sipariş: <strong>{product.moq} {product.unit}</strong></li>
             <li className={outOfStock ? 'text-danger' : ''}>
-              📊 Stok: <strong>{outOfStock ? 'Tükendi' : `${product.stock} ${product.unit}`}</strong>
+              Stok durumu: <strong>{outOfStock ? 'Tükendi' : `${product.stock} ${product.unit}`}</strong>
             </li>
           </ul>
 

@@ -33,9 +33,8 @@ const ReminderBanner = () => {
 
   return (
     <div className="reminder">
-      <span className="reminder__icon">🔔</span>
       <span className="reminder__text">
-        <strong>Haftalık sipariş zamanı!</strong> Bu haftanın siparişini vermeyi unutma — teslimat
+        <strong>Haftalık sipariş zamanı.</strong> Bu haftanın siparişini vermeyi unutma — teslimat
         gününü seçip listeni oluştur.
       </span>
       <Link to="/sepet" className="btn btn--light btn--sm">

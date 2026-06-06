@@ -67,7 +67,7 @@ const CatalogPage = () => {
         <input
           type="search"
           className="input"
-          placeholder="🔍 Ürün ara..."
+          placeholder="Ürün ara..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -94,10 +94,9 @@ const CatalogPage = () => {
       {loading ? (
         <Spinner fullPage label="Ürünler yükleniyor..." />
       ) : error ? (
-        <EmptyState icon="⚠️" title="Bir hata oluştu" message={error} />
+        <EmptyState title="Bir hata oluştu" message={error} />
       ) : products.length === 0 ? (
         <EmptyState
-          icon="🔍"
           title="Ürün bulunamadı"
           message="Arama veya filtre kriterlerinize uygun ürün yok."
         />

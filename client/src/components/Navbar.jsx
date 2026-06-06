@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useCart } from '../context/CartContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
+import { Logo } from './Logo.jsx';
 
 /**
  * Üst gezinme çubuğu.
@@ -30,8 +31,11 @@ const Navbar = () => {
     <header className="navbar">
       <div className="navbar__inner container">
         <Link to="/" className="navbar__brand" onClick={closeMenu}>
-          🥬 Numan Gıda
-          <span className="navbar__slogan">Taze Meyve & Sebze Toptan</span>
+          <Logo size={42} />
+          <span className="navbar__brand-text">
+            Numan Gıda
+            <span className="navbar__slogan">Meyve · Sebze · Toptan</span>
+          </span>
         </Link>
 
         <button

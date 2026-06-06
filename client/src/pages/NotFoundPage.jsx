@@ -7,7 +7,6 @@ import EmptyState from '../components/EmptyState.jsx';
 const NotFoundPage = () => (
   <div className="container">
     <EmptyState
-      icon="🧭"
       title="404 — Sayfa bulunamadı"
       message="Aradığın sayfa taşınmış veya hiç var olmamış olabilir."
       action={

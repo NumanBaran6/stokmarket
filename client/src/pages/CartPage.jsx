@@ -61,7 +61,6 @@ const CartPage = () => {
     return (
       <div className="container">
         <EmptyState
-          icon="🛒"
           title="Sepetin boş"
           message="Katalogdan ürün ekleyerek haftalık sipariş listeni oluşturabilirsin."
           action={
@@ -128,7 +127,7 @@ const CartPage = () => {
                   onClick={() => removeItem(item.product._id)}
                   aria-label="Kaldır"
                 >
-                  🗑
+                  Kaldır
                 </button>
               </div>
             );

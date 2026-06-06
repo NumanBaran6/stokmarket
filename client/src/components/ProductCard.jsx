@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { useCart } from '../context/CartContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import { formatTL } from '../utils/format.js';
+import { CrateIcon } from './Logo.jsx';
 
 /**
  * Tek bir ürünü kart olarak gösterir.
@@ -28,7 +29,9 @@ const ProductCard = ({ product }) => {
         {product.imageUrl ? (
           <img src={product.imageUrl} alt={product.name} />
         ) : (
-          <div className="product-card__placeholder">📦</div>
+          <div className="product-card__placeholder">
+            <CrateIcon size={64} />
+          </div>
         )}
         {product.isVipPrice && <span className="product-card__vip">VIP Fiyat</span>}
       </Link>
@@ -49,10 +52,10 @@ const ProductCard = ({ product }) => {
 
         <div className="product-card__meta">
           <span title="Minimum sipariş miktarı">
-            🔢 Min. {product.moq} {product.unit}
+            Min. sipariş: {product.moq} {product.unit}
           </span>
           <span className={outOfStock ? 'text-danger' : ''}>
-            {outOfStock ? 'Stok yok' : `Stok: ${product.stock}`}
+            {outOfStock ? 'Stok yok' : `Stok: ${product.stock} ${product.unit}`}
           </span>
         </div>
 

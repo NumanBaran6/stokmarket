@@ -91,9 +91,9 @@ const LoginPage = () => {
 
         <div className="auth-card__demo">
           <strong>Demo hesaplar (şifre: 123456):</strong>
-          <span>👑 admin@numangida.com</span>
-          <span>⭐ vip@numangida.com</span>
-          <span>🛒 bayi@numangida.com</span>
+          <span>Yönetici — admin@numangida.com</span>
+          <span>VIP Bayi — vip@numangida.com</span>
+          <span>Bayi — bayi@numangida.com</span>
         </div>
       </div>
     </div>
