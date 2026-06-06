@@ -38,6 +38,7 @@ const AdminPage = () => {
   const [form, setForm] = useState(EMPTY_PRODUCT);
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   // Kategori ekleme formu
   const [newCategory, setNewCategory] = useState({ name: '', description: '' });
@@ -162,6 +163,26 @@ const AdminPage = () => {
   const handleFormChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: '' });
+  };
+
+  // Görsel dosyasını backend'e yükle ve dönen URL'i forma yaz
+  const handleImageUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const data = new FormData();
+    data.append('image', file);
+    setUploading(true);
+    try {
+      const res = await api.post('/upload', data, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      setForm((f) => ({ ...f, imageUrl: res.data.url }));
+      toast.success('Görsel yüklendi.');
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      setUploading(false);
+    }
   };
 
   if (loading) return <Spinner fullPage />;
@@ -331,8 +352,27 @@ const AdminPage = () => {
             </FormField>
           </div>
 
-          <FormField label="Görsel URL (opsiyonel)" name="imageUrl">
-            <input className="input" name="imageUrl" value={form.imageUrl} onChange={handleFormChange} />
+          <FormField label="Ürün Görseli (dosya yükle)" name="imageUrl">
+            <input
+              className="input"
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              disabled={uploading}
+            />
+            {uploading && <span className="form-hint">Yükleniyor...</span>}
+            {form.imageUrl && !uploading && (
+              <div className="image-preview">
+                <img src={form.imageUrl} alt="Önizleme" />
+                <button
+                  type="button"
+                  className="btn btn--ghost btn--sm"
+                  onClick={() => setForm((f) => ({ ...f, imageUrl: '' }))}
+                >
+                  Görseli kaldır
+                </button>
+              </div>
+            )}
           </FormField>
 
           <div className="modal__footer">

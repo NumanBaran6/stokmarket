@@ -5,7 +5,6 @@ import ProductCard from '../components/ProductCard.jsx';
 import ReminderBanner from '../components/ReminderBanner.jsx';
 import Spinner from '../components/Spinner.jsx';
 import EmptyState from '../components/EmptyState.jsx';
-import { Logo } from '../components/Logo.jsx';
 
 /**
  * Anasayfa / Ürün kataloğu.
@@ -56,9 +55,7 @@ const CatalogPage = () => {
       {isAuthenticated && user?.role === 'customer' && <ReminderBanner />}
 
       <section className="hero hero--center">
-        <Logo size={88} />
-        <h1 className="hero__brand">Numan Gıda</h1>
-        <p className="hero__tagline">Tarladan en taze haliyle...</p>
+        <h1 className="hero__tagline">Tarladan en taze haliyle...</h1>
         <p className="hero__sub">
           Sabahın ilk ışığında halden seçtiğimiz meyve ve sebzeler, aynı gün tezgâhınızda.
           Aradan komisyoncuyu çıkardık; doğrudan üreticiden, dalından koparılmış tazelikte

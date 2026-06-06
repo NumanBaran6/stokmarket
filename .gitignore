@@ -14,6 +14,10 @@ build/
 */dist/
 */build/
 
+# Kullanıcı tarafından yüklenen ürün görselleri (klasör korunur, içerik yoksayılır)
+server/uploads/*
+!server/uploads/.gitkeep
+
 # Loglar
 logs/
 *.log
