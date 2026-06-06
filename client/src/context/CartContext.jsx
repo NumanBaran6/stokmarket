@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 
 const CartContext = createContext(null);
 
-const STORAGE_KEY = 'stokmarket_cart';
+const STORAGE_KEY = 'numangida_cart';
 
 /**
  * Sepet (haftalık sipariş listesi) context'i.

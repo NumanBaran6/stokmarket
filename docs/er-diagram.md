@@ -1,6 +1,6 @@
 # Veritabanı ER Diyagramı (Entity-Relationship)
 
-StokMarket veritabanı MongoDB üzerinde Mongoose şemaları ile modellenmiştir.
+Numan Gıda veritabanı MongoDB üzerinde Mongoose şemaları ile modellenmiştir.
 Aşağıdaki ER diyagramı modelleri ve aralarındaki ilişkileri gösterir.
 
 ```mermaid

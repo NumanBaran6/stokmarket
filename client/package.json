@@ -1,8 +1,8 @@
 {
-  "name": "stokmarket-client",
+  "name": "numangida-client",
   "private": true,
   "version": "1.0.0",
-  "description": "StokMarket B2B platformu - Frontend (React + Vite)",
+  "description": "Numan Gıda - meyve & sebze toptan platformu - Frontend (React + Vite)",
   "type": "module",
   "scripts": {
     "dev": "vite",

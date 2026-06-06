@@ -1,7 +1,7 @@
 {
-  "name": "stokmarket-server",
+  "name": "numangida-server",
   "version": "1.0.0",
-  "description": "StokMarket B2B toptan satış platformu - Backend API (Node.js + Express + MongoDB)",
+  "description": "Numan Gıda - meyve & sebze toptan satış platformu - Backend API (Node.js + Express + MongoDB)",
   "main": "src/index.js",
   "type": "module",
   "scripts": {

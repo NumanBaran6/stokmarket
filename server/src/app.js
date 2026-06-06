@@ -31,7 +31,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 // --- Sağlık kontrolü (deploy platformları için) ---
 app.get('/api/health', (req, res) => {
-  res.json({ success: true, message: 'StokMarket API çalışıyor 🟢', time: new Date() });
+  res.json({ success: true, message: 'Numan Gıda API çalışıyor 🟢', time: new Date() });
 });
 
 // --- API rotaları ---

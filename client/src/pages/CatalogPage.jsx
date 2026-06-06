@@ -55,9 +55,9 @@ const CatalogPage = () => {
       {isAuthenticated && user?.role === 'customer' && <ReminderBanner />}
 
       <section className="hero">
-        <h1>Toptan Ürün Kataloğu</h1>
+        <h1>Taze Meyve & Sebze Kataloğu</h1>
         <p>
-          Dükkanının raflarını doldur. Koli bazında sipariş ver, teslimat gününü seç,
+          Manav tezgâhını tazele. Kasa, çuval ve kg bazında sipariş ver, teslimat gününü seç,
           {user?.tier === 'vip' ? ' VIP bayi fiyatlarından yararlan.' : ' otomatik faturanı al.'}
         </p>
       </section>

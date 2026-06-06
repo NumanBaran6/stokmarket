@@ -12,7 +12,7 @@ const api = axios.create({
 
 // Her istekte Authorization başlığını ekle (token varsa)
 api.interceptors.request.use((config) => {
-  const stored = localStorage.getItem('stokmarket_user');
+  const stored = localStorage.getItem('numangida_user');
   if (stored) {
     try {
       const { token } = JSON.parse(stored);
@@ -29,7 +29,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('stokmarket_user');
+      localStorage.removeItem('numangida_user');
     }
     // Backend'in anlamlı mesajını öne çıkar
     const message =

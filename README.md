@@ -1,7 +1,7 @@
-# 🛒 StokMarket — "Raflarını Doldur"
+# 🥬 Numan Gıda — Taze Meyve & Sebze Toptan
 
-Perakendecilerin (bayilerin) toptancıdan **haftalık sipariş** verebildiği, minimum
-sipariş miktarı (MOQ) ve **VIP bayi fiyatları** içeren **B2B** sipariş & stok takip platformu.
+Manavların (perakendecilerin) toptancıdan **haftalık taze meyve & sebze siparişi** verebildiği,
+minimum sipariş miktarı (MOQ) ve **VIP bayi fiyatları** içeren **B2B** sipariş & stok takip platformu.
 
 > **BLG330 — Web Programlama** dönem projesi · MERN Stack (MongoDB, Express, React, Node.js)
 
@@ -9,13 +9,13 @@ sipariş miktarı (MOQ) ve **VIP bayi fiyatları** içeren **B2B** sipariş & st
 
 ## ✨ Öne Çıkan Özellikler
 
-- 🔢 **Minimum Sipariş Miktarı (MOQ):** Her ürün için "en az X koli" kuralı; hem arayüzde hem backend'de zorunlu kılınır.
-- ⭐ **VIP Bayi Fiyatları:** VIP seviyesindeki bayilere ürün bazında özel indirimli fiyat. Fiyat sunucu tarafında belirlenir.
-- 📅 **Teslimat Günü Seçimi:** Sipariş verirken haftanın teslimat günü seçilir.
+- 🔢 **Minimum Sipariş Miktarı (MOQ):** Her ürün için "en az X kasa/çuval/kg" kuralı; hem arayüzde hem backend'de zorunlu kılınır.
+- ⭐ **VIP Bayi Fiyatları:** VIP seviyesindeki manavlara ürün bazında özel indirimli fiyat. Fiyat sunucu tarafında belirlenir.
+- 📅 **Teslimat Günü Seçimi:** Sipariş verirken haftanın teslimat günü seçilir (taze ürün için kritik).
 - 🧾 **Otomatik Fatura:** Sipariş onaylanınca benzersiz fatura numarası üretilir, fatura detayı görüntülenir.
-- 🔔 **Haftalık Sipariş Hatırlatması:** Hafta başında bayilere sipariş hatırlatma afişi.
-- 📦 **Stok Takibi:** Sipariş verilince stok düşer, iptal edilince geri eklenir.
-- 👑 **Rol Tabanlı Erişim:** `admin` (toptancı) ve `customer` (bayi) rolleri; korumalı rotalar.
+- 🔔 **Haftalık Sipariş Hatırlatması:** Hafta başında manavlara sipariş hatırlatma afişi.
+- 🍎 **Kasa/Çuval/Kg Bazında Satış:** Meyve & sebze toptan birimlerine uygun stok takibi; sipariş verilince stok düşer, iptal edilince geri eklenir.
+- 👑 **Rol Tabanlı Erişim:** `admin` (toptancı) ve `customer` (manav) rolleri; korumalı rotalar.
 
 ---
 
@@ -107,9 +107,9 @@ npm run seed
 
 | Rol | E-posta | Şifre |
 |-----|---------|-------|
-| 👑 Yönetici (Admin) | `admin@stokmarket.com` | `123456` |
-| ⭐ VIP Bayi | `vip@stokmarket.com` | `123456` |
-| 🛒 Standart Bayi | `bayi@stokmarket.com` | `123456` |
+| 👑 Yönetici (Admin) | `admin@numangida.com` | `123456` |
+| ⭐ VIP Bayi | `vip@numangida.com` | `123456` |
+| 🛒 Standart Bayi | `bayi@numangida.com` | `123456` |
 
 ---
 

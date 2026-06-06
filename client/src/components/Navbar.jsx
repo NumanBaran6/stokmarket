@@ -30,8 +30,8 @@ const Navbar = () => {
     <header className="navbar">
       <div className="navbar__inner container">
         <Link to="/" className="navbar__brand" onClick={closeMenu}>
-          🛒 StokMarket
-          <span className="navbar__slogan">Raflarını Doldur</span>
+          🥬 Numan Gıda
+          <span className="navbar__slogan">Taze Meyve & Sebze Toptan</span>
         </Link>
 
         <button

@@ -6,7 +6,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="container footer__inner">
         <p>
-          <strong>StokMarket</strong> — Perakendeciler için B2B toptan sipariş platformu
+          <strong>Numan Gıda</strong> — Manavlar için taze meyve & sebze toptan sipariş platformu
         </p>
         <p className="footer__muted">
           © {new Date().getFullYear()} · BLG330 Web Programlama Dönem Projesi

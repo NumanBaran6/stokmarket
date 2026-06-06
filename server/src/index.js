@@ -18,11 +18,11 @@ const startServer = async () => {
     if (!process.env.MONGODB_URI && process.env.NODE_ENV !== 'production') {
       await seedDatabase();
       console.log('🌱 Geçici veritabanı örnek verilerle dolduruldu.');
-      console.log('   👑 admin@stokmarket.com | ⭐ vip@stokmarket.com | 🛒 bayi@stokmarket.com  (şifre: 123456)');
+      console.log('   👑 admin@numangida.com | ⭐ vip@numangida.com | 🛒 bayi@numangida.com  (şifre: 123456)');
     }
 
     app.listen(PORT, () => {
-      console.log(`🚀 StokMarket API ${PORT} portunda çalışıyor (${process.env.NODE_ENV || 'development'})`);
+      console.log(`🚀 Numan Gıda API ${PORT} portunda çalışıyor (${process.env.NODE_ENV || 'development'})`);
     });
   } catch (error) {
     console.error('❌ Sunucu başlatılamadı:', error.message);

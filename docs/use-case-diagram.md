@@ -1,6 +1,6 @@
 # Use-Case Diyagramı
 
-StokMarket'te iki temel aktör vardır: **Bayi (Perakendeci)** ve **Yönetici (Toptancı)**.
+Numan Gıda'da iki temel aktör vardır: **Bayi (Manav/Perakendeci)** ve **Yönetici (Toptancı)**.
 Ziyaretçi (giriş yapmamış kullanıcı) yalnızca katalogu görüntüleyebilir.
 
 ```mermaid

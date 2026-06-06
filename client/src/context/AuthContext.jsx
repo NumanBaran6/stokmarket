@@ -3,7 +3,7 @@ import api from '../api/axios.js';
 
 const AuthContext = createContext(null);
 
-const STORAGE_KEY = 'stokmarket_user';
+const STORAGE_KEY = 'numangida_user';
 
 /**
  * Kimlik doğrulama context'i.

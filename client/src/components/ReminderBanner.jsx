@@ -13,7 +13,7 @@ const ReminderBanner = () => {
   useEffect(() => {
     const today = new Date();
     const dayKey = today.toDateString();
-    const dismissed = localStorage.getItem('stokmarket_reminder_dismissed');
+    const dismissed = localStorage.getItem('numangida_reminder_dismissed');
 
     // Hafta başı günleri hatırlatma göster (0=Pazar ... 1=Pzt, 2=Salı)
     const day = today.getDay();
@@ -25,7 +25,7 @@ const ReminderBanner = () => {
   }, []);
 
   const dismiss = () => {
-    localStorage.setItem('stokmarket_reminder_dismissed', new Date().toDateString());
+    localStorage.setItem('numangida_reminder_dismissed', new Date().toDateString());
     setVisible(false);
   };
 
