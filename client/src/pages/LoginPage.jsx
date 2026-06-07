@@ -93,6 +93,7 @@ const LoginPage = () => {
           <strong>Demo hesaplar (şifre: 123456):</strong>
           <span>Yönetici — admin@numangida.com</span>
           <span>VIP Bayi — vip@numangida.com</span>
+          <span>VIP+ Bayi — vipplus@numangida.com</span>
           <span>Bayi — bayi@numangida.com</span>
         </div>
       </div>

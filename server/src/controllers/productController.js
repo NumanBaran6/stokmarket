@@ -8,7 +8,9 @@ import { asyncHandler } from '../middleware/asyncHandler.js';
 const serializeProduct = (product, tier) => {
   const obj = product.toObject();
   obj.effectivePrice = product.priceForTier(tier);
-  obj.isVipPrice = tier === 'vip' && product.vipPrice != null;
+  // İndirim uygulanıyor mu ve hangi seviye etiketi gösterilecek?
+  obj.isDiscounted = obj.effectivePrice < product.price;
+  obj.tierLabel = tier === 'vip+' ? 'VIP+' : tier === 'vip' ? 'VIP' : null;
   return obj;
 };
 

@@ -75,6 +75,7 @@ const Navbar = () => {
               <span className="navbar__username">
                 {user.name}
                 {user.tier === 'vip' && <span className="navbar__vip">VIP</span>}
+                {user.tier === 'vip+' && <span className="navbar__vip">VIP+</span>}
               </span>
               <button className="btn btn--ghost btn--sm" onClick={handleLogout}>
                 Çıkış

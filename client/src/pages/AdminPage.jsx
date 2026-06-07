@@ -12,17 +12,19 @@ const EMPTY_PRODUCT = {
   category: '',
   price: '',
   vipPrice: '',
-  unit: 'koli',
+  vipPlusPrice: '',
+  unit: 'kasa',
   moq: 1,
   stock: 0,
   imageUrl: '',
 };
 
+const TIER_LABEL = { standard: 'Standart', vip: 'VIP', 'vip+': 'VIP+' };
+
 /**
  * Yönetici paneli.
- * - Ürünler sekmesi: ürün ekleme/düzenleme/silme (modal form ile).
- * - Kategoriler sekmesi: kategori ekleme/silme.
- * Tüm işlemler admin korumalı backend endpoint'lerine gider.
+ * - Ürünler sekmesi: ürün ekleme/düzenleme/silme (fiyat, VIP ve VIP+ fiyatları).
+ * - Üyeler sekmesi: kayıtlı bayileri listeler, seviyelerini (Standart/VIP/VIP+) değiştirir.
  */
 const AdminPage = () => {
   const toast = useToast();
@@ -30,6 +32,7 @@ const AdminPage = () => {
 
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Ürün form modalı
@@ -40,15 +43,17 @@ const AdminPage = () => {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
 
-  // Kategori ekleme formu
-  const [newCategory, setNewCategory] = useState({ name: '', description: '' });
-
   const loadData = async () => {
     setLoading(true);
     try {
-      const [p, c] = await Promise.all([api.get('/products'), api.get('/categories')]);
+      const [p, c, u] = await Promise.all([
+        api.get('/products'),
+        api.get('/categories'),
+        api.get('/users'),
+      ]);
       setProducts(p.data.data);
       setCategories(c.data.data);
+      setMembers(u.data.data);
     } catch (err) {
       toast.error(err.message);
     } finally {
@@ -76,6 +81,7 @@ const AdminPage = () => {
       category: product.category?._id || product.category || '',
       price: product.price,
       vipPrice: product.vipPrice ?? '',
+      vipPlusPrice: product.vipPlusPrice ?? '',
       unit: product.unit,
       moq: product.moq,
       stock: product.stock,
@@ -105,6 +111,7 @@ const AdminPage = () => {
         ...form,
         price: Number(form.price),
         vipPrice: form.vipPrice === '' ? null : Number(form.vipPrice),
+        vipPlusPrice: form.vipPlusPrice === '' ? null : Number(form.vipPlusPrice),
         moq: Number(form.moq),
         stock: Number(form.stock),
       };
@@ -135,26 +142,12 @@ const AdminPage = () => {
     }
   };
 
-  // --- Kategori işlemleri ---
-  const addCategory = async (e) => {
-    e.preventDefault();
-    if (!newCategory.name.trim()) return;
+  // --- Üye seviyesi değiştirme ---
+  const changeTier = async (member, tier) => {
     try {
-      await api.post('/categories', newCategory);
-      toast.success('Kategori eklendi.');
-      setNewCategory({ name: '', description: '' });
-      loadData();
-    } catch (err) {
-      toast.error(err.message);
-    }
-  };
-
-  const deleteCategory = async (cat) => {
-    if (!window.confirm(`"${cat.name}" kategorisi silinsin mi?`)) return;
-    try {
-      await api.delete(`/categories/${cat._id}`);
-      toast.success('Kategori silindi.');
-      loadData();
+      await api.put(`/users/${member._id}/tier`, { tier });
+      setMembers((list) => list.map((m) => (m._id === member._id ? { ...m, tier } : m)));
+      toast.success(`${member.shopName} → ${TIER_LABEL[tier]}`);
     } catch (err) {
       toast.error(err.message);
     }
@@ -199,10 +192,10 @@ const AdminPage = () => {
           Ürünler ({products.length})
         </button>
         <button
-          className={`tab ${tab === 'categories' ? 'tab--active' : ''}`}
-          onClick={() => setTab('categories')}
+          className={`tab ${tab === 'members' ? 'tab--active' : ''}`}
+          onClick={() => setTab('members')}
         >
-          Kategoriler ({categories.length})
+          Üyeler ({members.length})
         </button>
       </div>
 
@@ -222,6 +215,7 @@ const AdminPage = () => {
                   <th>Kategori</th>
                   <th>Fiyat</th>
                   <th>VIP</th>
+                  <th>VIP+</th>
                   <th>MOQ</th>
                   <th>Stok</th>
                   <th></th>
@@ -234,6 +228,7 @@ const AdminPage = () => {
                     <td data-label="Kategori">{p.category?.name}</td>
                     <td data-label="Fiyat">{formatTL(p.price)}</td>
                     <td data-label="VIP">{p.vipPrice != null ? formatTL(p.vipPrice) : '—'}</td>
+                    <td data-label="VIP+">{p.vipPlusPrice != null ? formatTL(p.vipPlusPrice) : '—'}</td>
                     <td data-label="MOQ">{p.moq} {p.unit}</td>
                     <td data-label="Stok">{p.stock}</td>
                     <td className="table__actions">
@@ -252,53 +247,51 @@ const AdminPage = () => {
         </>
       )}
 
-      {/* KATEGORİLER SEKMESİ */}
-      {tab === 'categories' && (
-        <div className="admin-categories">
-          <form className="card category-form" onSubmit={addCategory}>
-            <h3>Yeni Kategori</h3>
-            <input
-              className="input"
-              placeholder="Kategori adı"
-              value={newCategory.name}
-              onChange={(e) => setNewCategory({ ...newCategory, name: e.target.value })}
-            />
-            <input
-              className="input"
-              placeholder="Açıklama (opsiyonel)"
-              value={newCategory.description}
-              onChange={(e) => setNewCategory({ ...newCategory, description: e.target.value })}
-            />
-            <button className="btn btn--primary" type="submit">
-              Ekle
-            </button>
-          </form>
-
+      {/* ÜYELER SEKMESİ */}
+      {tab === 'members' && (
+        <>
+          <p className="text-muted" style={{ marginBottom: '1rem' }}>
+            Kayıtlı bayilere VIP veya VIP+ seviyesi vererek özel fiyatlardan yararlanmalarını sağlayabilirsiniz.
+          </p>
           <div className="table-wrap">
             <table className="table">
               <thead>
                 <tr>
-                  <th>Ad</th>
-                  <th>Açıklama</th>
-                  <th></th>
+                  <th>Bayi / Dükkan</th>
+                  <th>Ad Soyad</th>
+                  <th>E-posta</th>
+                  <th>Telefon</th>
+                  <th>Seviye</th>
                 </tr>
               </thead>
               <tbody>
-                {categories.map((c) => (
-                  <tr key={c._id}>
-                    <td data-label="Ad">{c.name}</td>
-                    <td data-label="Açıklama">{c.description || '—'}</td>
-                    <td>
-                      <button className="btn btn--danger btn--sm" onClick={() => deleteCategory(c)}>
-                        Sil
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {members.length === 0 ? (
+                  <tr><td colSpan="5" className="text-muted">Henüz kayıtlı üye yok.</td></tr>
+                ) : (
+                  members.map((m) => (
+                    <tr key={m._id}>
+                      <td data-label="Bayi">{m.shopName}</td>
+                      <td data-label="Ad Soyad">{m.name}</td>
+                      <td data-label="E-posta">{m.email}</td>
+                      <td data-label="Telefon">{m.phone || '—'}</td>
+                      <td data-label="Seviye">
+                        <select
+                          className="input"
+                          value={m.tier}
+                          onChange={(e) => changeTier(m, e.target.value)}
+                        >
+                          <option value="standard">Standart</option>
+                          <option value="vip">VIP</option>
+                          <option value="vip+">VIP+</option>
+                        </select>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
-        </div>
+        </>
       )}
 
       {/* ÜRÜN EKLE/DÜZENLE MODALI */}
@@ -335,8 +328,11 @@ const AdminPage = () => {
             <FormField label="Fiyat (₺)" name="price" error={errors.price}>
               <input className="input" type="number" name="price" value={form.price} onChange={handleFormChange} />
             </FormField>
-            <FormField label="VIP Fiyat (₺, ops.)" name="vipPrice">
+            <FormField label="VIP Fiyat (₺)" name="vipPrice">
               <input className="input" type="number" name="vipPrice" value={form.vipPrice} onChange={handleFormChange} />
+            </FormField>
+            <FormField label="VIP+ Fiyat (₺)" name="vipPlusPrice">
+              <input className="input" type="number" name="vipPlusPrice" value={form.vipPlusPrice} onChange={handleFormChange} />
             </FormField>
           </div>
 

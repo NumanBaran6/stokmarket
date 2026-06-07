@@ -33,7 +33,9 @@ const ProductCard = ({ product }) => {
             <CrateIcon size={64} />
           </div>
         )}
-        {product.isVipPrice && <span className="product-card__vip">VIP Fiyat</span>}
+        {product.isDiscounted && product.tierLabel && (
+          <span className="product-card__vip">{product.tierLabel} Fiyat</span>
+        )}
       </Link>
 
       <div className="product-card__body">
@@ -45,7 +47,7 @@ const ProductCard = ({ product }) => {
         <div className="product-card__price">
           <span className="price">{formatTL(product.effectivePrice)}</span>
           <span className="price__unit">/ {product.unit}</span>
-          {product.isVipPrice && (
+          {product.isDiscounted && (
             <span className="price__old">{formatTL(product.price)}</span>
           )}
         </div>

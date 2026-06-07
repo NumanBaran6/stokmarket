@@ -44,7 +44,7 @@ const userSchema = new mongoose.Schema(
     },
     tier: {
       type: String,
-      enum: ['standard', 'vip'],
+      enum: ['standard', 'vip', 'vip+'],
       default: 'standard',
     },
   },

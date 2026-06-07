@@ -35,6 +35,11 @@ const productSchema = new mongoose.Schema(
       min: [0, 'VIP fiyat negatif olamaz.'],
       default: null,
     },
+    vipPlusPrice: {
+      type: Number,
+      min: [0, 'VIP+ fiyat negatif olamaz.'],
+      default: null,
+    },
     unit: {
       type: String,
       required: [true, 'Satış birimi zorunludur (örn. koli, paket, adet).'],
@@ -67,13 +72,14 @@ const productSchema = new mongoose.Schema(
 );
 
 /**
- * Verilen kullanıcı seviyesine (tier) göre geçerli birim fiyatı döndürür.
- * VIP kullanıcı ve tanımlı bir vipPrice varsa indirimli fiyatı kullanır.
+ * Verilen kullanıcı seviyesine göre geçerli birim fiyatı döndürür.
+ * - vip+  : en düşük fiyat; vipPlusPrice yoksa vipPrice'a, o da yoksa normal fiyata düşer.
+ * - vip   : vipPrice; yoksa normal fiyat.
+ * - diğer : normal fiyat.
  */
 productSchema.methods.priceForTier = function (tier) {
-  if (tier === 'vip' && this.vipPrice != null) {
-    return this.vipPrice;
-  }
+  if (tier === 'vip+' && this.vipPlusPrice != null) return this.vipPlusPrice;
+  if ((tier === 'vip' || tier === 'vip+') && this.vipPrice != null) return this.vipPrice;
   return this.price;
 };
 

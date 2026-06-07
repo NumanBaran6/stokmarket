@@ -58,6 +58,16 @@ export const seedDatabase = async () => {
     tier: 'standard',
   });
 
+  await User.create({
+    name: 'Zeynep Kaya',
+    email: 'vipplus@numangida.com',
+    password: '123456',
+    shopName: 'Kaya Manav - VIP+ Bayi',
+    phone: '0534 333 33 33',
+    role: 'customer',
+    tier: 'vip+',
+  });
+
   // --- Kategoriler (yalnızca meyve ve sebze) ---
   const [meyve, sebze] = await Category.create([
     { name: 'Meyve', description: 'Mevsim meyveleri, kasa ve kg bazında' },
@@ -65,7 +75,7 @@ export const seedDatabase = async () => {
   ]);
 
   // --- Ürünler (taze meyve & sebze, toptan birimler, yüksek MOQ) ---
-  await Product.create([
+  const productsData = [
     // ----- MEYVE -----
     {
       name: 'Kırmızı Elma',
@@ -311,7 +321,15 @@ export const seedDatabase = async () => {
       stock: 96,
       imageUrl: '/images/kabak.jpg',
     },
-  ]);
+  ];
+
+  // VIP+ fiyatı otomatik hesapla: VIP fiyatının ~%6 altı (VIP yoksa normal fiyatın ~%12 altı)
+  for (const p of productsData) {
+    const base = p.vipPrice ?? p.price;
+    p.vipPlusPrice = Math.round(base * 0.94);
+  }
+
+  await Product.create(productsData);
 };
 
 /**
@@ -322,9 +340,10 @@ const runAsCli = async () => {
   await connectDB();
   await seedDatabase();
   console.log('\n✅ Seed tamamlandı! Örnek hesaplar:');
-  console.log('   👑 Admin : admin@numangida.com / 123456');
-  console.log('   ⭐ VIP   : vip@numangida.com   / 123456');
-  console.log('   🛒 Bayi  : bayi@numangida.com  / 123456');
+  console.log('   👑 Admin : admin@numangida.com     / 123456');
+  console.log('   ⭐ VIP   : vip@numangida.com       / 123456');
+  console.log('   💎 VIP+  : vipplus@numangida.com   / 123456');
+  console.log('   🛒 Bayi  : bayi@numangida.com      / 123456');
   await disconnectDB();
   process.exit(0);
 };

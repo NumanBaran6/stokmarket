@@ -71,10 +71,12 @@ const ProductDetailPage = () => {
           <div className="product-detail__price">
             <span className="price price--lg">{formatTL(product.effectivePrice)}</span>
             <span className="price__unit">/ {product.unit}</span>
-            {product.isVipPrice && (
+            {product.isDiscounted && (
               <>
                 <span className="price__old">{formatTL(product.price)}</span>
-                <span className="product-card__vip">VIP Fiyat</span>
+                {product.tierLabel && (
+                  <span className="product-card__vip">{product.tierLabel} Fiyat</span>
+                )}
               </>
             )}
           </div>
