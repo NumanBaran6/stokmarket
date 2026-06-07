@@ -55,13 +55,9 @@ const orderSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
-    deliveryDay: {
-      type: String,
-      required: [true, 'Teslimat günü seçilmelidir.'],
-      enum: {
-        values: ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'],
-        message: '{VALUE} geçerli bir teslimat günü değil.',
-      },
+    deliveryDate: {
+      type: Date,
+      required: [true, 'Teslimat tarihi seçilmelidir.'],
     },
     invoiceNumber: {
       type: String,

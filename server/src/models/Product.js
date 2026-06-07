@@ -20,6 +20,16 @@ const productSchema = new mongoose.Schema(
       trim: true,
       default: '',
     },
+    origin: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    grade: {
+      type: String,
+      trim: true,
+      default: '',
+    },
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Category',

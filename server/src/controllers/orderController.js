@@ -6,11 +6,26 @@ import { asyncHandler } from '../middleware/asyncHandler.js';
 // @route   POST /api/orders
 // @access  Private/Customer
 export const createOrder = asyncHandler(async (req, res) => {
-  const { items, deliveryDay, note } = req.body;
+  const { items, deliveryDate, note } = req.body;
 
   if (!Array.isArray(items) || items.length === 0) {
     res.status(400);
     throw new Error('Sipariş en az bir ürün içermelidir.');
+  }
+
+  // Teslimat tarihi: geçerli, bugünden itibaren en fazla 1 ay içinde olmalı
+  const date = new Date(deliveryDate);
+  if (Number.isNaN(date.getTime())) {
+    res.status(400);
+    throw new Error('Geçerli bir teslimat tarihi seçiniz.');
+  }
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const maxDate = new Date(today);
+  maxDate.setDate(maxDate.getDate() + 31);
+  if (date < today || date > maxDate) {
+    res.status(400);
+    throw new Error('Teslimat tarihi bugünden itibaren en fazla 1 ay içinde olmalıdır.');
   }
 
   const orderItems = [];
@@ -63,7 +78,7 @@ export const createOrder = asyncHandler(async (req, res) => {
     customer: req.user._id,
     items: orderItems,
     totalAmount: Math.round(totalAmount * 100) / 100,
-    deliveryDay,
+    deliveryDate: date,
     note,
   });
 

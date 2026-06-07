@@ -312,7 +312,7 @@ h2 {
    Hero / başlık alanı
    ============================================================ */
 .hero {
-  background: linear-gradient(135deg, #2f6b3f, #3f8a4f);
+  background: #2f6b3f;
   color: #fdfbf4;
   padding: 2.25rem 1.75rem;
   border-radius: var(--radius);
@@ -610,6 +610,16 @@ h2 {
 .cart-summary {
   position: sticky;
   top: 80px;
+}
+.payment-box {
+  border: 1.5px solid var(--c-border);
+  background: #faf8f2;
+  padding: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.payment-box h4 {
+  margin-bottom: 0.6rem;
+  font-size: 0.95rem;
 }
 .cart-summary__row {
   display: flex;

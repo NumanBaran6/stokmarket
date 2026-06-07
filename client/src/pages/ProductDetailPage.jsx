@@ -49,7 +49,7 @@ const ProductDetailPage = () => {
   return (
     <div className="container product-detail">
       <button className="btn btn--ghost btn--sm" onClick={() => navigate(-1)}>
-        ← Katalova dön
+        ← Kataloğa dön
       </button>
 
       <div className="product-detail__grid">
@@ -82,6 +82,8 @@ const ProductDetailPage = () => {
           </div>
 
           <ul className="product-detail__specs">
+            {product.origin && <li>Üretim yeri: <strong>{product.origin}</strong></li>}
+            {product.grade && <li>Sınıf: <strong>{product.grade}</strong></li>}
             <li>Satış birimi: <strong>{product.unit}</strong></li>
             <li>Minimum sipariş: <strong>{product.moq} {product.unit}</strong></li>
             <li className={outOfStock ? 'text-danger' : ''}>

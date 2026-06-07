@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import Spinner from '../components/Spinner.jsx';
 import StatusBadge from '../components/StatusBadge.jsx';
-import { formatTL, formatDate } from '../utils/format.js';
+import { formatTL, formatDate, formatDateShort } from '../utils/format.js';
 
 const STATUS_OPTIONS = ['beklemede', 'onaylandı', 'hazırlanıyor', 'teslim edildi', 'iptal'];
 
@@ -83,7 +83,7 @@ const OrderDetailPage = () => {
           <div>
             <span className="label">Sipariş Tarihi</span>
             <strong>{formatDate(order.createdAt)}</strong>
-            <span className="label">Teslimat Günü: {order.deliveryDay}</span>
+            <span className="label">Teslimat Tarihi: {formatDateShort(order.deliveryDate)}</span>
           </div>
         </div>
 

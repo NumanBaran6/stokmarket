@@ -21,3 +21,16 @@ export const formatDate = (isoString) => {
     minute: '2-digit',
   });
 };
+
+/**
+ * Yalnızca tarih (saat olmadan), örn. 15 Haziran 2026 Pazartesi.
+ */
+export const formatDateShort = (isoString) => {
+  if (!isoString) return '-';
+  return new Date(isoString).toLocaleDateString('tr-TR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    weekday: 'long',
+  });
+};

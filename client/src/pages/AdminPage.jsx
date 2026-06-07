@@ -9,6 +9,8 @@ import { formatTL } from '../utils/format.js';
 const EMPTY_PRODUCT = {
   name: '',
   description: '',
+  origin: '',
+  grade: '',
   category: '',
   price: '',
   vipPrice: '',
@@ -78,6 +80,8 @@ const AdminPage = () => {
     setForm({
       name: product.name,
       description: product.description || '',
+      origin: product.origin || '',
+      grade: product.grade || '',
       category: product.category?._id || product.category || '',
       price: product.price,
       vipPrice: product.vipPrice ?? '',
@@ -250,9 +254,6 @@ const AdminPage = () => {
       {/* ÜYELER SEKMESİ */}
       {tab === 'members' && (
         <>
-          <p className="text-muted" style={{ marginBottom: '1rem' }}>
-            Kayıtlı bayilere VIP veya VIP+ seviyesi vererek özel fiyatlardan yararlanmalarını sağlayabilirsiniz.
-          </p>
           <div className="table-wrap">
             <table className="table">
               <thead>
@@ -323,6 +324,15 @@ const AdminPage = () => {
               onChange={handleFormChange}
             />
           </FormField>
+
+          <div className="form-row">
+            <FormField label="Üretim Yeri" name="origin">
+              <input className="input" name="origin" value={form.origin} onChange={handleFormChange} placeholder="Örn. Antalya" />
+            </FormField>
+            <FormField label="Sınıf" name="grade">
+              <input className="input" name="grade" value={form.grade} onChange={handleFormChange} placeholder="Örn. 1. Sınıf" />
+            </FormField>
+          </div>
 
           <div className="form-row">
             <FormField label="Fiyat (₺)" name="price" error={errors.price}>

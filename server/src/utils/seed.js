@@ -323,10 +323,39 @@ export const seedDatabase = async () => {
     },
   ];
 
-  // VIP+ fiyatı otomatik hesapla: VIP fiyatının ~%6 altı (VIP yoksa normal fiyatın ~%12 altı)
+  // Ürünlerin üretim yerleri (Türkiye'nin öne çıkan üretim bölgeleri)
+  const origins = {
+    'Kırmızı Elma': 'Isparta',
+    'Muz (İthal)': 'Anamur',
+    'Portakal (Sıkmalık)': 'Antalya',
+    'Çilek': 'Aydın',
+    'Sultani Üzüm': 'Manisa',
+    'Limon': 'Mersin',
+    'Mandalina': 'Antalya',
+    'Armut': 'Bursa',
+    'Kavun': 'Kırkağaç',
+    'Nar': 'Antalya',
+    'Avokado': 'Antalya',
+    'Erik': 'Bursa',
+    'Domates (Sofralık)': 'Antalya',
+    'Salatalık': 'Antalya',
+    'Patates': 'Niğde',
+    'Kuru Soğan': 'Amasya',
+    'Kıvırcık Marul': 'İzmir',
+    'Maydanoz': 'Bursa',
+    'Sivri Biber': 'Çanakkale',
+    'Patlıcan': 'Antalya',
+    'Havuç': 'Konya',
+    'Kabak': 'Antalya',
+  };
+
   for (const p of productsData) {
+    // VIP+ fiyatı: VIP fiyatının ~%6 altı (VIP yoksa normal fiyatın ~%12 altı)
     const base = p.vipPrice ?? p.price;
     p.vipPlusPrice = Math.round(base * 0.94);
+    // Üretim yeri ve sınıf bilgisi
+    p.origin = origins[p.name] || 'Türkiye';
+    p.grade = '1. Sınıf';
   }
 
   await Product.create(productsData);

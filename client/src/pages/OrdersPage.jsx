@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import Spinner from '../components/Spinner.jsx';
 import EmptyState from '../components/EmptyState.jsx';
 import StatusBadge from '../components/StatusBadge.jsx';
-import { formatTL, formatDate } from '../utils/format.js';
+import { formatTL, formatDate, formatDateShort } from '../utils/format.js';
 
 /**
  * Siparişlerim sayfası.
@@ -40,7 +40,7 @@ const OrdersPage = () => {
           message="Katalogdan ürün seçip ilk haftalık siparişini oluşturabilirsin."
           action={
             <Link to="/" className="btn btn--primary">
-              Katalova Git
+              Kataloğa Git
             </Link>
           }
         />
@@ -64,7 +64,7 @@ const OrdersPage = () => {
                   <td data-label="Fatura No">{o.invoiceNumber}</td>
                   {isAdmin && <td data-label="Bayi">{o.customer?.shopName || '-'}</td>}
                   <td data-label="Tarih">{formatDate(o.createdAt)}</td>
-                  <td data-label="Teslimat">{o.deliveryDay}</td>
+                  <td data-label="Teslimat">{formatDateShort(o.deliveryDate)}</td>
                   <td data-label="Tutar">{formatTL(o.totalAmount)}</td>
                   <td data-label="Durum">
                     <StatusBadge status={o.status} />
