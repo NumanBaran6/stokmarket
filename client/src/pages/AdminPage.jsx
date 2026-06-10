@@ -35,6 +35,7 @@ const AdminPage = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [members, setMembers] = useState([]);
+  const [memberSearch, setMemberSearch] = useState('');
   const [loading, setLoading] = useState(true);
 
   // Ürün form modalı
@@ -267,6 +268,16 @@ const AdminPage = () => {
       {/* ÜYELER SEKMESİ */}
       {tab === 'members' && (
         <>
+          <div className="admin-toolbar">
+            <input
+              type="search"
+              className="input"
+              placeholder="E-posta ile üye ara..."
+              value={memberSearch}
+              onChange={(e) => setMemberSearch(e.target.value)}
+              style={{ maxWidth: '320px' }}
+            />
+          </div>
           <div className="table-wrap">
             <table className="table">
               <thead>
@@ -280,10 +291,21 @@ const AdminPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {members.length === 0 ? (
-                  <tr><td colSpan="6" className="text-muted">Henüz kayıtlı üye yok.</td></tr>
-                ) : (
-                  members.map((m) => (
+                {(() => {
+                  const q = memberSearch.trim().toLowerCase();
+                  const list = q
+                    ? members.filter((m) => m.email.toLowerCase().includes(q))
+                    : members;
+                  if (list.length === 0) {
+                    return (
+                      <tr>
+                        <td colSpan="6" className="text-muted">
+                          {q ? 'Eşleşen üye bulunamadı.' : 'Henüz kayıtlı üye yok.'}
+                        </td>
+                      </tr>
+                    );
+                  }
+                  return list.map((m) => (
                     <tr key={m._id}>
                       <td data-label="Bayi">{m.shopName}</td>
                       <td data-label="Ad Soyad">{m.name}</td>
@@ -312,8 +334,8 @@ const AdminPage = () => {
                         </select>
                       </td>
                     </tr>
-                  ))
-                )}
+                  ));
+                })()}
               </tbody>
             </table>
           </div>

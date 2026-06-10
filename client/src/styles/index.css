@@ -503,7 +503,8 @@ h2 {
 }
 .product-card__meta {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 0.15rem;
   font-size: 0.8rem;
   color: var(--c-muted);
   margin-top: auto;
