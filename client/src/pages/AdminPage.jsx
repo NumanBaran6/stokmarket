@@ -281,10 +281,10 @@ const AdminPage = () => {
             <input
               type="search"
               className="input"
-              placeholder="E-posta ile üye ara..."
+              placeholder="İsim, bayi adı, e-posta veya telefon ile ara..."
               value={memberSearch}
               onChange={(e) => setMemberSearch(e.target.value)}
-              style={{ maxWidth: '320px' }}
+              style={{ maxWidth: '480px' }}
             />
           </div>
           <div className="table-wrap">
@@ -303,7 +303,11 @@ const AdminPage = () => {
                 {(() => {
                   const q = memberSearch.trim().toLowerCase();
                   const list = q
-                    ? members.filter((m) => m.email.toLowerCase().includes(q))
+                    ? members.filter((m) =>
+                        [m.email, m.shopName, m.name, m.phone]
+                          .filter(Boolean)
+                          .some((f) => f.toLowerCase().includes(q))
+                      )
                     : members;
                   if (list.length === 0) {
                     return (

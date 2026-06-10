@@ -27,46 +27,29 @@ export const seedDatabase = async () => {
     Order.deleteMany(),
   ]);
 
-  // --- Kullanıcılar (create → pre('save') hook'u şifreleri hashler) ---
+  // --- Yönetici (create → pre('save') hook'u şifreleri hashler) ---
   await User.create({
-    name: 'Numan Toptancı',
+    name: 'Numan Baran',
     email: 'admin@numangida.com',
     password: '123456',
-    shopName: 'Numan Gıda Toptan Hal',
+    shopName: 'Numan Gıda Toptan',
     phone: '0212 000 00 00',
     role: 'admin',
     tier: 'standard',
   });
 
-  await User.create({
-    name: 'Ahmet Yılmaz',
-    email: 'vip@numangida.com',
-    password: '123456',
-    shopName: 'Yılmaz Manav - VIP Bayi',
-    phone: '0532 111 11 11',
-    role: 'customer',
-    tier: 'vip',
-  });
-
-  await User.create({
-    name: 'Mehmet Demir',
-    email: 'bayi@numangida.com',
-    password: '123456',
-    shopName: 'Demir Manav',
-    phone: '0533 222 22 22',
-    role: 'customer',
-    tier: 'standard',
-  });
-
-  await User.create({
-    name: 'Zeynep Kaya',
-    email: 'vipplus@numangida.com',
-    password: '123456',
-    shopName: 'Kaya Manav - VIP+ Bayi',
-    phone: '0534 333 33 33',
-    role: 'customer',
-    tier: 'vip+',
-  });
+  // --- Kayıtlı bayiler (gerçek isim-soyad) ---
+  await User.create([
+    { name: 'Ahmet Yılmaz', email: 'vip@numangida.com', password: '123456', shopName: 'Yılmaz Market', phone: '0532 111 11 11', role: 'customer', tier: 'vip' },
+    { name: 'Mehmet Demir', email: 'bayi@numangida.com', password: '123456', shopName: 'Demir Gıda', phone: '0533 222 22 22', role: 'customer', tier: 'standard' },
+    { name: 'Zeynep Kaya', email: 'vipplus@numangida.com', password: '123456', shopName: 'Kaya Toptan Gıda', phone: '0534 333 33 33', role: 'customer', tier: 'vip+' },
+    { name: 'Elif Şahin', email: 'elif@numangida.com', password: '123456', shopName: 'Şahin Market', phone: '0535 444 44 44', role: 'customer', tier: 'standard', moqPrivilege: 'half' },
+    { name: 'Mustafa Çelik', email: 'mustafa@numangida.com', password: '123456', shopName: 'Çelik Market', phone: '0536 555 55 55', role: 'customer', tier: 'vip' },
+    { name: 'Ayşe Doğan', email: 'ayse@numangida.com', password: '123456', shopName: 'Doğan Bakkal', phone: '0537 666 66 66', role: 'customer', tier: 'standard' },
+    { name: 'Can Aydın', email: 'can@numangida.com', password: '123456', shopName: 'Aydın Gıda', phone: '0538 777 77 77', role: 'customer', tier: 'vip+', moqPrivilege: 'none' },
+    { name: 'Fatma Yıldız', email: 'fatma@numangida.com', password: '123456', shopName: 'Yıldız Market', phone: '0539 888 88 88', role: 'customer', tier: 'standard' },
+    { name: 'Burak Arslan', email: 'burak@numangida.com', password: '123456', shopName: 'Arslan Ticaret', phone: '0531 999 99 99', role: 'customer', tier: 'vip' },
+  ]);
 
   // --- Kategoriler (yalnızca meyve ve sebze) ---
   const [meyve, sebze] = await Category.create([
@@ -378,7 +361,44 @@ export const seedDatabase = async () => {
     if (stockMap[p.name]) p.stock = stockMap[p.name];
   }
 
-  await Product.create(productsData);
+  const products = await Product.create(productsData);
+
+  // --- Örnek siparişler (ciro ve bekleyen siparişleri göstermek için) ---
+  const customers = await User.find({ role: 'customer' });
+  const userByEmail = Object.fromEntries(customers.map((u) => [u.email, u]));
+  const productByPrefix = (prefix) => products.find((p) => p.name.startsWith(prefix));
+
+  // [müşteri e-postası, durum, teslimata kaç gün, [[ürün, miktar], ...]]
+  const orderPlan = [
+    ['vip@numangida.com', 'beklemede', 3, [['Kırmızı Elma', 30], ['Domates', 25]]],
+    ['bayi@numangida.com', 'beklemede', 5, [['Muz', 20], ['Portakal', 20]]],
+    ['vipplus@numangida.com', 'onaylandı', 2, [['Çilek', 25], ['Limon', 18]]],
+    ['elif@numangida.com', 'beklemede', 7, [['Patates', 25], ['Kuru Soğan', 25]]],
+    ['mustafa@numangida.com', 'hazırlanıyor', 1, [['Salatalık', 22], ['Patlıcan', 18]]],
+    ['ayse@numangida.com', 'teslim edildi', -3, [['Mandalina', 20], ['Armut', 16]]],
+    ['can@numangida.com', 'beklemede', 4, [['Kavun', 18], ['Sultani Üzüm', 20]]],
+    ['burak@numangida.com', 'teslim edildi', -6, [['Nar', 16], ['Kabak', 18]]],
+    ['fatma@numangida.com', 'iptal', 6, [['Maydanoz', 15]]],
+  ];
+
+  const orderDocs = orderPlan.map(([email, status, days, specs]) => {
+    const customer = userByEmail[email];
+    const items = specs.map(([prefix, quantity]) => {
+      const p = productByPrefix(prefix);
+      const priceAtOrder = p.priceForTier(customer.tier);
+      return { product: p._id, name: p.name, unit: p.unit, quantity, priceAtOrder };
+    });
+    const totalAmount = items.reduce((s, it) => s + it.priceAtOrder * it.quantity, 0);
+    const shippingFee = totalAmount >= 5000 ? 0 : 350;
+    const deliveryDate = new Date();
+    deliveryDate.setDate(deliveryDate.getDate() + days);
+    return { customer: customer._id, items, totalAmount, shippingFee, deliveryDate, status };
+  });
+
+  // create() döngüsü pre('save') hook'unu çalıştırır → fatura no üretilir
+  for (const doc of orderDocs) {
+    await Order.create(doc);
+  }
 };
 
 /**
