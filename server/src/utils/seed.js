@@ -1,10 +1,9 @@
 /**
- * Veritabanını örnek verilerle doldurur (kategoriler, ürünler, kullanıcılar).
+ * Veritabanını örnek verilerle doldurur (kategoriler, ürünler, kullanıcılar, siparişler).
  *
  * İki şekilde kullanılır:
  *  1) CLI:   `npm run seed`  → bağlanır, doldurur, kapanır (mevcut veriyi SİLER).
- *  2) Otomatik: geçici (in-memory) veritabanı modunda sunucu açılışında
- *     index.js tarafından çağrılır (seedDatabase).
+ *  2) Otomatik: geçici (in-memory) veritabanı modunda sunucu açılışında çağrılır.
  */
 import dotenv from 'dotenv';
 import { connectDB, disconnectDB } from '../config/db.js';
@@ -15,10 +14,6 @@ import Order from '../models/Order.js';
 
 dotenv.config();
 
-/**
- * Veritabanını sıfırlayıp örnek verilerle doldurur.
- * Aktif bir Mongoose bağlantısı olduğunu varsayar.
- */
 export const seedDatabase = async () => {
   await Promise.all([
     User.deleteMany(),
@@ -27,7 +22,7 @@ export const seedDatabase = async () => {
     Order.deleteMany(),
   ]);
 
-  // --- Yönetici (create → pre('save') hook'u şifreleri hashler) ---
+  // --- Yönetici ---
   await User.create({
     name: 'Numan Baran',
     email: 'admin@numangida.com',
@@ -56,310 +51,90 @@ export const seedDatabase = async () => {
     { name: 'Meyve', description: 'Mevsim meyveleri, kasa ve kg bazında' },
     { name: 'Sebze', description: 'Taze sebze ve yeşillikler, kasa/çuval bazında' },
   ]);
+  const CAT = { M: meyve._id, S: sebze._id };
 
-  // --- Ürünler (taze meyve & sebze, toptan birimler, yüksek MOQ) ---
-  const productsData = [
-    // ----- MEYVE -----
-    {
-      name: 'Kırmızı Elma',
-      description: 'Birinci sınıf kırmızı elma. Yaklaşık 13 kg kasa.',
-      category: meyve._id,
-      price: 320,
-      vipPrice: 290,
-      unit: 'kasa',
-      moq: 15,
-      stock: 184,
-      imageUrl: '/images/elma.jpg',
-    },
-    {
-      name: 'Muz (İthal)',
-      description: 'Olgun ithal muz. 18 kg koli.',
-      category: meyve._id,
-      price: 540,
-      vipPrice: 499,
-      unit: 'koli',
-      moq: 12,
-      stock: 96,
-      imageUrl: '/images/muz.jpg',
-    },
-    {
-      name: 'Portakal (Sıkmalık)',
-      description: 'Sulu, sıkmalık portakal. 15 kg kasa.',
-      category: meyve._id,
-      price: 260,
-      vipPrice: null,
-      unit: 'kasa',
-      moq: 20,
-      stock: 233,
-      imageUrl: '/images/portakal.jpg',
-    },
-    {
-      name: 'Çilek',
-      description: 'Günlük taze çilek. Kg bazında satış.',
-      category: meyve._id,
-      price: 75,
-      vipPrice: 68,
-      unit: 'kg',
-      moq: 50,
-      stock: 412,
-      imageUrl: '/images/cilek.jpg',
-    },
-    {
-      name: 'Sultani Üzüm',
-      description: 'Çekirdeksiz sultani üzüm. Yaklaşık 5 kg kasa.',
-      category: meyve._id,
-      price: 95,
-      vipPrice: 86,
-      unit: 'kasa',
-      moq: 18,
-      stock: 147,
-      imageUrl: '/images/uzum.jpg',
-    },
-    {
-      name: 'Limon',
-      description: 'Kabuğu ince, sulu limon. 15 kg kasa.',
-      category: meyve._id,
-      price: 210,
-      vipPrice: 195,
-      unit: 'kasa',
-      moq: 12,
-      stock: 168,
-      imageUrl: '/images/limon.jpg',
-    },
-    {
-      name: 'Mandalina',
-      description: 'Tatlı kış mandalinası. Yaklaşık 10 kg kasa.',
-      category: meyve._id,
-      price: 180,
-      vipPrice: 165,
-      unit: 'kasa',
-      moq: 15,
-      stock: 256,
-      imageUrl: '/images/mandalina.jpg',
-    },
-    {
-      name: 'Armut (Deveci)',
-      description: 'Deveci armut. Yaklaşık 13 kg kasa.',
-      category: meyve._id,
-      price: 290,
-      vipPrice: 270,
-      unit: 'kasa',
-      moq: 12,
-      stock: 134,
-      imageUrl: '/images/armut.jpg',
-    },
-    {
-      name: 'Kavun',
-      description: 'Kırkağaç kavunu. Kg bazında satış.',
-      category: meyve._id,
-      price: 28,
-      vipPrice: 25,
-      unit: 'kg',
-      moq: 80,
-      stock: 690,
-      imageUrl: '/images/kavun.jpg',
-    },
-    {
-      name: 'Nar',
-      description: 'Ekşi-tatlı nar. Yaklaşık 12 kg kasa.',
-      category: meyve._id,
-      price: 240,
-      vipPrice: null,
-      unit: 'kasa',
-      moq: 10,
-      stock: 118,
-      imageUrl: '/images/nar.jpg',
-    },
-    {
-      name: 'Avokado',
-      description: 'Yağlı, kremamsı avokado. Yaklaşık 4 kg kasa.',
-      category: meyve._id,
-      price: 380,
-      vipPrice: 350,
-      unit: 'kasa',
-      moq: 8,
-      stock: 73,
-      imageUrl: '/images/avokado.jpg',
-    },
-    {
-      name: 'Erik',
-      description: 'Sulu, tatlı erik. Yaklaşık 10 kg kasa.',
-      category: meyve._id,
-      price: 300,
-      vipPrice: 275,
-      unit: 'kasa',
-      moq: 10,
-      stock: 91,
-      imageUrl: '/images/erik.jpg',
-    },
+  // Kompakt ürün listesi:
+  // [slug, ad, kategori, fiyat, vipFiyat, birim, moq, stok, üretimYeri, açıklama]
+  const raw = [
+    // ===== MEYVE =====
+    ['elma', 'Kırmızı Elma', 'M', 320, 290, 'kasa', 20, 840, 'Isparta', 'Sulu ve tatlı kırmızı elma; kahvaltılık ve şıralık kullanıma uygun.'],
+    ['yesilelma', 'Yeşil Elma', 'M', 340, 305, 'kasa', 20, 560, 'Karaman', 'Ekşimsi ve çıtır yeşil elma; salata ve tatlılar için ideal.'],
+    ['muz', 'Muz', 'M', 540, 499, 'kasa', 18, 470, 'Anamur', 'Olgun ve tatlı yerli muz; kabuğu ince, eti yumuşak.'],
+    ['portakal2', 'Portakal', 'M', 260, null, 'kasa', 20, 920, 'Antalya', 'Sulu sıkmalık portakal; yüksek verimli ve taze.'],
+    ['mandalina', 'Mandalina', 'M', 240, 220, 'kasa', 20, 610, 'Bodrum', 'Kolay soyulan tatlı mandalina; çekirdeksiz.'],
+    ['limon', 'Limon', 'M', 210, 195, 'kasa', 18, 730, 'Mersin', 'Bol sulu, kabuğu parlak limon; mutfak ve limonata için.'],
+    ['greyfurt', 'Greyfurt', 'M', 230, null, 'kasa', 18, 180, 'Adana', 'Mayhoş ve iri greyfurt; kahvaltı ve diyet için.'],
+    ['cilek', 'Çilek', 'M', 75, 68, 'kg', 20, 0, 'Aydın', 'Günlük taze çilek; kokulu ve tatlı.'],
+    ['uzum', 'Sultani Üzüm', 'M', 95, 86, 'kg', 20, 470, 'Manisa', 'Çekirdeksiz sultani üzüm; sofralık ve kurutmalık.'],
+    ['siyahuzum', 'Siyah Üzüm', 'M', 110, 99, 'kg', 18, 260, 'Tekirdağ', 'İri taneli siyah sofralık üzüm; tatlı ve sulu.'],
+    ['armut', 'Armut', 'M', 290, 270, 'kasa', 18, 390, 'Bursa', 'Deveci armut; sert etli, tatlı ve dayanıklı.'],
+    ['nar', 'Nar', 'M', 240, null, 'kasa', 15, 280, 'Antalya', 'Ekşi-tatlı nar; bol sulu ve iri taneli.'],
+    ['kavun', 'Kavun', 'M', 180, 165, 'kasa', 15, 950, 'Kırkağaç', 'Kırkağaç kavunu; kokulu ve bal gibi tatlı.'],
+    ['karpuz2', 'Karpuz', 'M', 160, null, 'kasa', 15, 700, 'Adana', 'İçi kırmızı ve sulu karpuz; yazlık serinletici.'],
+    ['seftali', 'Şeftali', 'M', 130, 118, 'kasa', 18, 320, 'Bursa', 'Tüylü sarı şeftali; sulu ve aromalı.'],
+    ['kayisi', 'Kayısı', 'M', 145, 130, 'kasa', 18, 240, 'Malatya', 'Malatya kayısısı; etli, tatlı ve aromatik.'],
+    ['erik', 'Erik', 'M', 120, 108, 'kasa', 16, 360, 'Bursa', 'Can eriği; mayhoş ve çıtır, mevsimlik lezzet.'],
+    ['kiraz', 'Kiraz', 'M', 160, 145, 'kg', 18, 18, 'Afyon', 'Napolyon kiraz; iri, sert ve tatlı.'],
+    ['visne3', 'Vişne', 'M', 130, null, 'kg', 18, 0, 'Afyon', 'Ekşi vişne; reçel, şıra ve tatlı için.'],
+    ['avokado', 'Avokado', 'M', 380, 350, 'kasa', 15, 175, 'Antalya', 'Kremamsı Hass avokado; kahvaltı ve salata için.'],
+    ['ananas', 'Ananas', 'M', 90, null, 'kasa', 16, 140, 'İthal', 'İthal ananas; tatlı, sulu ve aromatik.'],
+    ['mango', 'Mango', 'M', 110, 99, 'kasa', 15, 12, 'İthal', 'İthal mango; tatlı ve lifli, tropik aroma.'],
+    ['kivi', 'Kivi', 'M', 85, 78, 'kasa', 16, 30, 'Ordu', 'Yeşil kivi; C vitamini deposu, mayhoş.'],
+    ['hurma', 'Trabzon Hurması', 'M', 95, null, 'kasa', 16, 210, 'Trabzon', 'Trabzon hurması; yumuşak, ballı ve tatlı.'],
+    ['ayva', 'Ayva', 'M', 100, 90, 'kasa', 16, 290, 'Bursa', 'Tüylü sarı ayva; reçel ve tatlı için ideal.'],
+    ['nektarin', 'Nektarin', 'M', 135, 122, 'kasa', 18, 25, 'Bursa', 'Tüysüz nektarin; sulu, tatlı ve çıtır.'],
+    ['bogurtlen', 'Böğürtlen', 'M', 140, null, 'kg', 15, 22, 'Rize', 'Taze böğürtlen; antioksidan bakımından zengin.'],
+    ['ahududu', 'Ahududu', 'M', 180, null, 'kg', 15, 0, 'Rize', 'Kokulu ahududu; tatlı-mayhoş ve narin.'],
+    ['yabanmersini', 'Yaban Mersini', 'M', 220, 199, 'kg', 15, 15, 'Rize', 'Taze yaban mersini; küçük taneli ve sağlıklı.'],
 
-    // ----- SEBZE -----
-    {
-      name: 'Domates (Sofralık)',
-      description: 'Sofralık olgun domates. Yaklaşık 10 kg kasa.',
-      category: sebze._id,
-      price: 180,
-      vipPrice: 160,
-      unit: 'kasa',
-      moq: 20,
-      stock: 312,
-      imageUrl: '/images/domates.jpg',
-    },
-    {
-      name: 'Salatalık',
-      description: 'Çıtır salatalık. 10 kg kasa.',
-      category: sebze._id,
-      price: 150,
-      vipPrice: null,
-      unit: 'kasa',
-      moq: 15,
-      stock: 198,
-      imageUrl: '/images/salatalik.jpg',
-    },
-    {
-      name: 'Patates',
-      description: 'Yıkanmış patates. 25 kg çuval.',
-      category: sebze._id,
-      price: 240,
-      vipPrice: 220,
-      unit: 'çuval',
-      moq: 20,
-      stock: 276,
-      imageUrl: '/images/patates.jpg',
-    },
-    {
-      name: 'Kuru Soğan',
-      description: 'Kuru soğan. 25 kg çuval.',
-      category: sebze._id,
-      price: 200,
-      vipPrice: 185,
-      unit: 'çuval',
-      moq: 25,
-      stock: 241,
-      imageUrl: '/images/sogan.jpg',
-    },
-    {
-      name: 'Kıvırcık Marul',
-      description: 'Taze kıvırcık marul. 12 adetlik kasa.',
-      category: sebze._id,
-      price: 110,
-      vipPrice: 99,
-      unit: 'kasa',
-      moq: 10,
-      stock: 87,
-      imageUrl: '/images/marul.jpg',
-    },
-    {
-      name: 'Maydanoz',
-      description: 'Taze maydanoz. 30 demetlik kasa.',
-      category: sebze._id,
-      price: 90,
-      vipPrice: null,
-      unit: 'kasa',
-      moq: 10,
-      stock: 123,
-      imageUrl: '/images/maydanoz.jpg',
-    },
-    {
-      name: 'Sivri Biber',
-      description: 'Taze sivri biber. Yaklaşık 8 kg kasa.',
-      category: sebze._id,
-      price: 160,
-      vipPrice: 145,
-      unit: 'kasa',
-      moq: 12,
-      stock: 142,
-      imageUrl: '/images/biber.jpg',
-    },
-    {
-      name: 'Patlıcan',
-      description: 'Kemer patlıcan. Yaklaşık 10 kg kasa.',
-      category: sebze._id,
-      price: 170,
-      vipPrice: 155,
-      unit: 'kasa',
-      moq: 12,
-      stock: 109,
-      imageUrl: '/images/patlican.jpg',
-    },
-    {
-      name: 'Havuç',
-      description: 'Yıkanmış havuç. 20 kg çuval.',
-      category: sebze._id,
-      price: 150,
-      vipPrice: 135,
-      unit: 'çuval',
-      moq: 15,
-      stock: 203,
-      imageUrl: '/images/havuc.jpg',
-    },
-    {
-      name: 'Kabak',
-      description: 'Taze sakız kabağı. Yaklaşık 10 kg kasa.',
-      category: sebze._id,
-      price: 140,
-      vipPrice: null,
-      unit: 'kasa',
-      moq: 12,
-      stock: 96,
-      imageUrl: '/images/kabak.jpg',
-    },
+    // ===== SEBZE =====
+    ['domates', 'Domates', 'S', 180, 160, 'kasa', 20, 880, 'Antalya', 'Sofralık olgun domates; etli ve sulu.'],
+    ['salatalik', 'Salatalık', 'S', 150, null, 'kasa', 18, 540, 'Antalya', 'Çıtır salatalık; ince kabuklu ve sulu.'],
+    ['patates', 'Patates', 'S', 240, 220, 'çuval', 20, 760, 'Niğde', 'Yıkanmış patates; haşlama ve kızartmalık.'],
+    ['sogan', 'Kuru Soğan', 'S', 200, 185, 'çuval', 20, 690, 'Amasya', 'Kuru sarı soğan; dayanıklı ve aromalı.'],
+    ['kirmizisogan', 'Kırmızı Soğan', 'S', 220, null, 'çuval', 20, 240, 'İzmir', 'Kırmızı soğan; salata ve közleme için tatlı.'],
+    ['sarimsak', 'Sarımsak', 'S', 320, 290, 'kasa', 15, 160, 'Kastamonu', 'Kastamonu sarımsağı; kokulu ve aromalı.'],
+    ['havuc', 'Havuç', 'S', 150, 135, 'çuval', 18, 580, 'Konya', 'Yıkanmış havuç; tatlı ve gevrek.'],
+    ['biber', 'Sivri Biber', 'S', 160, 145, 'kasa', 16, 360, 'Çanakkale', 'Çıtır sivri biber; hafif acı, kızartmalık.'],
+    ['kirmizibiber', 'Kırmızı Biber', 'S', 180, null, 'kasa', 16, 200, 'Antalya', 'Dolmalık kırmızı biber; etli ve tatlı.'],
+    ['patlican', 'Patlıcan', 'S', 170, 155, 'kasa', 16, 295, 'Antalya', 'Kemer patlıcan; közleme ve kızartma için ideal.'],
+    ['kabak', 'Kabak', 'S', 140, null, 'kasa', 16, 330, 'Antalya', 'Sakız kabağı; ince kabuklu ve yemeklik.'],
+    ['marul', 'Kıvırcık Marul', 'S', 110, 99, 'kasa', 15, 240, 'İzmir', 'Taze kıvırcık marul; gevrek ve salatalık.'],
+    ['maydanoz', 'Maydanoz', 'S', 90, null, 'kasa', 15, 410, 'Bursa', 'Taze maydanoz; kokulu, demet demet.'],
+    ['dereotu', 'Dereotu', 'S', 95, null, 'kasa', 15, 20, 'Bursa', 'Taze dereotu; salata ve yemeklere aroma.'],
+    ['nane', 'Nane', 'S', 95, null, 'kasa', 15, 24, 'Hatay', 'Taze nane; çay ve yemeklere ferah aroma.'],
+    ['roka', 'Roka', 'S', 100, null, 'kasa', 15, 28, 'İzmir', 'Acımsı roka; salata ve pizza için.'],
+    ['ispanak', 'Ispanak', 'S', 120, 108, 'kasa', 18, 320, 'Konya', 'Taze ıspanak; demir bakımından zengin, yemeklik.'],
+    ['brokoli', 'Brokoli', 'S', 160, 145, 'kasa', 16, 180, 'Manisa', 'Yeşil brokoli; sıkı taçlı ve taze.'],
+    ['karnabahar', 'Karnabahar', 'S', 150, null, 'kasa', 16, 160, 'Manisa', 'Beyaz karnabahar; sıkı ve lekesiz.'],
+    ['lahana', 'Beyaz Lahana', 'S', 110, null, 'kasa', 18, 290, 'Bolu', 'Beyaz baş lahana; sarma ve salata için.'],
+    ['kirmizilahana', 'Kırmızı Lahana', 'S', 130, null, 'kasa', 16, 150, 'Bolu', 'Kırmızı lahana; salata ve turşuluk, renkli.'],
+    ['prasa', 'Pırasa', 'S', 120, 108, 'kasa', 16, 260, 'Çanakkale', 'Taze pırasa; zeytinyağlı ve yemeklik.'],
+    ['kereviz', 'Kereviz', 'S', 140, null, 'kasa', 15, 35, 'Antalya', 'Kök kereviz; zeytinyağlı yemekler için.'],
+    ['turp', 'Turp', 'S', 110, null, 'kasa', 15, 190, 'Ankara', 'Beyaz turp; salata ve mezelik, gevrek.'],
+    ['pancar', 'Pancar', 'S', 120, null, 'kasa', 15, 140, 'Bolu', 'Kırmızı pancar; haşlama ve salatalık.'],
+    ['tazefasulye', 'Taze Fasulye', 'S', 170, 155, 'kasa', 18, 230, 'İzmir', 'Taze çalı fasulyesi; etli ve körpe.'],
+    ['bezelye', 'Bezelye', 'S', 160, null, 'kasa', 18, 0, 'İzmir', 'Taze bezelye; körpe taneli ve tatlı.'],
+    ['misir', 'Mısır', 'S', 130, null, 'kasa', 16, 410, 'Şanlıurfa', 'Tatlı mısır; haşlamalık ve ızgaralık.'],
+    ['enginar', 'Enginar', 'S', 180, 165, 'kasa', 15, 0, 'İzmir', 'Temizlenmiş enginar; zeytinyağlı için hazır.'],
+    ['bamya', 'Bamya', 'S', 240, null, 'kasa', 15, 16, 'Antalya', 'Minik taze bamya; etli yemekler için.'],
   ];
 
-  // Ürünlerin üretim yerleri (Türkiye'nin öne çıkan üretim bölgeleri)
-  const origins = {
-    'Kırmızı Elma': 'Isparta',
-    'Muz (İthal)': 'Anamur',
-    'Portakal (Sıkmalık)': 'Antalya',
-    'Çilek': 'Aydın',
-    'Sultani Üzüm': 'Manisa',
-    'Limon': 'Mersin',
-    'Mandalina': 'Antalya',
-    'Armut': 'Bursa',
-    'Kavun': 'Kırkağaç',
-    'Nar': 'Antalya',
-    'Avokado': 'Antalya',
-    'Erik': 'Bursa',
-    'Domates (Sofralık)': 'Antalya',
-    'Salatalık': 'Antalya',
-    'Patates': 'Niğde',
-    'Kuru Soğan': 'Amasya',
-    'Kıvırcık Marul': 'İzmir',
-    'Maydanoz': 'Bursa',
-    'Sivri Biber': 'Çanakkale',
-    'Patlıcan': 'Antalya',
-    'Havuç': 'Konya',
-    'Kabak': 'Antalya',
-  };
-
-  // Minimum sipariş miktarları (15-20 kasa civarı)
-  const moqMap = {
-    'Kırmızı Elma': 20, 'Muz (İthal)': 18, 'Portakal (Sıkmalık)': 20, 'Çilek': 20,
-    'Sultani Üzüm': 18, 'Limon': 16, 'Mandalina': 20, 'Armut': 15, 'Kavun': 15,
-    'Nar': 15, 'Avokado': 15, 'Erik': 16, 'Domates (Sofralık)': 20, 'Salatalık': 18,
-    'Patates': 20, 'Kuru Soğan': 20, 'Kıvırcık Marul': 15, 'Maydanoz': 15,
-    'Sivri Biber': 16, 'Patlıcan': 16, 'Havuç': 18, 'Kabak': 16,
-  };
-  // Stok miktarları (50-1000 arası, tam olmayan; gösterimde "800+" gibi yuvarlanır)
-  const stockMap = {
-    'Kırmızı Elma': 840, 'Muz (İthal)': 560, 'Portakal (Sıkmalık)': 920, 'Çilek': 680,
-    'Sultani Üzüm': 470, 'Limon': 730, 'Mandalina': 610, 'Armut': 390, 'Kavun': 950,
-    'Nar': 280, 'Avokado': 175, 'Erik': 320, 'Domates (Sofralık)': 880, 'Salatalık': 540,
-    'Patates': 760, 'Kuru Soğan': 690, 'Kıvırcık Marul': 240, 'Maydanoz': 410,
-    'Sivri Biber': 360, 'Patlıcan': 295, 'Havuç': 580, 'Kabak': 330,
-  };
-
-  for (const p of productsData) {
-    // VIP+ fiyatı: VIP fiyatının ~%6 altı (VIP yoksa normal fiyatın ~%12 altı)
-    const base = p.vipPrice ?? p.price;
-    p.vipPlusPrice = Math.round(base * 0.94);
-    // Üretim yeri ve sınıf bilgisi
-    p.origin = origins[p.name] || 'Türkiye';
-    p.grade = '1. Sınıf';
-    // Yüksek MOQ ve stok
-    if (moqMap[p.name]) p.moq = moqMap[p.name];
-    if (stockMap[p.name]) p.stock = stockMap[p.name];
-  }
+  const productsData = raw.map(([slug, name, cat, price, vip, unit, moq, stock, origin, desc]) => ({
+    name,
+    description: desc,
+    origin,
+    grade: '1. Sınıf',
+    category: CAT[cat],
+    price,
+    vipPrice: vip,
+    // VIP+ fiyatı: VIP fiyatının (yoksa normal fiyatın) ~%6 altı
+    vipPlusPrice: Math.round((vip ?? price) * 0.94),
+    unit,
+    moq,
+    stock,
+    imageUrl: `/images/${slug}.jpg`,
+  }));
 
   const products = await Product.create(productsData);
 
@@ -372,11 +147,11 @@ export const seedDatabase = async () => {
   const orderPlan = [
     ['vip@numangida.com', 'beklemede', 3, [['Kırmızı Elma', 30], ['Domates', 25]]],
     ['bayi@numangida.com', 'beklemede', 5, [['Muz', 20], ['Portakal', 20]]],
-    ['vipplus@numangida.com', 'onaylandı', 2, [['Çilek', 25], ['Limon', 18]]],
+    ['vipplus@numangida.com', 'onaylandı', 2, [['Sultani Üzüm', 25], ['Limon', 18]]],
     ['elif@numangida.com', 'beklemede', 7, [['Patates', 25], ['Kuru Soğan', 25]]],
     ['mustafa@numangida.com', 'hazırlanıyor', 1, [['Salatalık', 22], ['Patlıcan', 18]]],
     ['ayse@numangida.com', 'teslim edildi', -3, [['Mandalina', 20], ['Armut', 16]]],
-    ['can@numangida.com', 'beklemede', 4, [['Kavun', 18], ['Sultani Üzüm', 20]]],
+    ['can@numangida.com', 'beklemede', 4, [['Kavun', 18], ['Havuç', 20]]],
     ['burak@numangida.com', 'teslim edildi', -6, [['Nar', 16], ['Kabak', 18]]],
     ['fatma@numangida.com', 'iptal', 6, [['Maydanoz', 15]]],
   ];
@@ -395,7 +170,6 @@ export const seedDatabase = async () => {
     return { customer: customer._id, items, totalAmount, shippingFee, deliveryDate, status };
   });
 
-  // create() döngüsü pre('save') hook'unu çalıştırır → fatura no üretilir
   for (const doc of orderDocs) {
     await Order.create(doc);
   }
@@ -417,7 +191,6 @@ const runAsCli = async () => {
   process.exit(0);
 };
 
-// Bu dosya doğrudan çalıştırıldıysa CLI modunu başlat
 const invokedDirectly = process.argv[1] && process.argv[1].endsWith('seed.js');
 if (invokedDirectly) {
   runAsCli().catch((err) => {
