@@ -45,11 +45,12 @@ export const createOrder = asyncHandler(async (req, res) => {
       throw new Error(`${product.name} için geçersiz miktar.`);
     }
 
-    // Minimum sipariş miktarı (MOQ) kontrolü
-    if (quantity < product.moq) {
+    // Minimum sipariş miktarı (MOQ) kontrolü — üyenin ayrıcalığı dikkate alınır
+    const effectiveMoq = product.moqForPrivilege(req.user.moqPrivilege);
+    if (quantity < effectiveMoq) {
       res.status(400);
       throw new Error(
-        `${product.name} için minimum sipariş ${product.moq} ${product.unit}'dir.`
+        `${product.name} için minimum sipariş ${effectiveMoq} ${product.unit}'dir.`
       );
     }
 

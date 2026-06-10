@@ -264,6 +264,14 @@ h2 {
 .navbar__links a.active {
   color: var(--c-primary);
 }
+/* Navbar içindeki butonlar kendi metin rengini korusun (yeşil zeminde beyaz yazı) */
+.navbar__links a.btn--primary,
+.navbar__links a.btn--primary.active {
+  color: #fff;
+}
+.navbar__links a.btn--ghost.active {
+  color: var(--c-text);
+}
 .navbar__cart {
   position: relative;
 }

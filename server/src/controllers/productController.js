@@ -5,12 +5,17 @@ import { asyncHandler } from '../middleware/asyncHandler.js';
  * Ürünü, istekteki kullanıcının seviyesine (tier) göre uygun fiyatla
  * istemciye uygun bir nesneye dönüştürür.
  */
-const serializeProduct = (product, tier) => {
+const serializeProduct = (product, user) => {
+  const tier = user?.tier || 'standard';
+  const privilege = user?.moqPrivilege || 'normal';
   const obj = product.toObject();
   obj.effectivePrice = product.priceForTier(tier);
   // İndirim uygulanıyor mu ve hangi seviye etiketi gösterilecek?
   obj.isDiscounted = obj.effectivePrice < product.price;
   obj.tierLabel = tier === 'vip+' ? 'VIP+' : tier === 'vip' ? 'VIP' : null;
+  // Kullanıcının ayrıcalığına göre geçerli minimum sipariş miktarı
+  obj.baseMoq = product.moq;
+  obj.moq = product.moqForPrivilege(privilege);
   return obj;
 };
 
@@ -24,13 +29,12 @@ export const getProducts = asyncHandler(async (req, res) => {
   if (category) filter.category = category;
   if (search) filter.name = { $regex: search, $options: 'i' };
 
-  const tier = req.user?.tier || 'standard';
   const products = await Product.find(filter).populate('category', 'name').sort('-createdAt');
 
   res.json({
     success: true,
     count: products.length,
-    data: products.map((p) => serializeProduct(p, tier)),
+    data: products.map((p) => serializeProduct(p, req.user)),
   });
 });
 
@@ -43,8 +47,7 @@ export const getProductById = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error('Ürün bulunamadı.');
   }
-  const tier = req.user?.tier || 'standard';
-  res.json({ success: true, data: serializeProduct(product, tier) });
+  res.json({ success: true, data: serializeProduct(product, req.user) });
 });
 
 // @desc    Yeni ürün oluştur

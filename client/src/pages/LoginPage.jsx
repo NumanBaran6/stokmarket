@@ -88,14 +88,6 @@ const LoginPage = () => {
         <p className="auth-card__foot">
           Hesabın yok mu? <Link to="/kayit">Kayıt ol</Link>
         </p>
-
-        <div className="auth-card__demo">
-          <strong>Demo hesaplar (şifre: 123456):</strong>
-          <span>Yönetici — admin@numangida.com</span>
-          <span>VIP Bayi — vip@numangida.com</span>
-          <span>VIP+ Bayi — vipplus@numangida.com</span>
-          <span>Bayi — bayi@numangida.com</span>
-        </div>
       </div>
     </div>
   );

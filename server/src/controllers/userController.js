@@ -48,3 +48,31 @@ export const updateUserTier = asyncHandler(async (req, res) => {
     },
   });
 });
+
+const VALID_PRIVILEGES = ['normal', 'half', 'none'];
+
+// @desc    Bir üyenin minimum sipariş ayrıcalığını güncelle
+// @route   PUT /api/users/:id/moq
+// @access  Private/Admin
+export const updateUserMoq = asyncHandler(async (req, res) => {
+  const { moqPrivilege } = req.body;
+
+  if (!VALID_PRIVILEGES.includes(moqPrivilege)) {
+    res.status(400);
+    throw new Error('Geçersiz minimum sipariş ayrıcalığı.');
+  }
+
+  const user = await User.findById(req.params.id);
+  if (!user || user.role === 'admin') {
+    res.status(404);
+    throw new Error('Üye bulunamadı.');
+  }
+
+  user.moqPrivilege = moqPrivilege;
+  await user.save();
+
+  res.json({
+    success: true,
+    data: { _id: user._id, shopName: user.shopName, moqPrivilege: user.moqPrivilege },
+  });
+});

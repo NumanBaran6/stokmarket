@@ -22,9 +22,9 @@ const buildAuthResponse = (user) => ({
 export const register = asyncHandler(async (req, res) => {
   const { name, email, password, shopName, phone } = req.body;
 
-  if (!name || !email || !password || !shopName) {
+  if (!name || !email || !password || !shopName || !phone) {
     res.status(400);
-    throw new Error('Ad, e-posta, şifre ve dükkan adı zorunludur.');
+    throw new Error('Ad, e-posta, şifre, dükkan adı ve telefon zorunludur.');
   }
 
   const exists = await User.findOne({ email });

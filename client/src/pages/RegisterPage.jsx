@@ -34,6 +34,7 @@ const RegisterPage = () => {
     if (form.name.trim().length < 2) errs.name = 'Ad Soyad en az 2 karakter olmalıdır.';
     if (form.shopName.trim().length < 2) errs.shopName = 'Dükkan adı zorunludur.';
     if (!/^\S+@\S+\.\S+$/.test(form.email)) errs.email = 'Geçerli bir e-posta giriniz.';
+    if (form.phone.replace(/\D/g, '').length < 10) errs.phone = 'Geçerli bir telefon numarası giriniz.';
     if (form.password.length < 6) errs.password = 'Şifre en az 6 karakter olmalıdır.';
     if (form.password !== form.passwordConfirm) errs.passwordConfirm = 'Şifreler eşleşmiyor.';
     setErrors(errs);
@@ -88,7 +89,7 @@ const RegisterPage = () => {
             />
           </FormField>
 
-          <FormField label="Telefon (opsiyonel)" name="phone" error={errors.phone}>
+          <FormField label="Telefon" name="phone" error={errors.phone}>
             <input
               id="phone"
               name="phone"

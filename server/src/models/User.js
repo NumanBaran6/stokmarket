@@ -47,6 +47,15 @@ const userSchema = new mongoose.Schema(
       enum: ['standard', 'vip', 'vip+'],
       default: 'standard',
     },
+    // Minimum sipariş miktarı ayrıcalığı:
+    //  normal = ürünün MOQ'su geçerli
+    //  half   = MOQ'nun yarısı kadarıyla sipariş verebilir
+    //  none   = MOQ kuralı uygulanmaz (1 adetten itibaren)
+    moqPrivilege: {
+      type: String,
+      enum: ['normal', 'half', 'none'],
+      default: 'normal',
+    },
   },
   { timestamps: true }
 );

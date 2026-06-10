@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useCart } from '../context/CartContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
-import { formatTL } from '../utils/format.js';
+import { formatTL, formatStockApprox } from '../utils/format.js';
 import { CrateIcon } from './Logo.jsx';
 
 /**
@@ -57,7 +57,7 @@ const ProductCard = ({ product }) => {
             Min. sipariş: {product.moq} {product.unit}
           </span>
           <span className={outOfStock ? 'text-danger' : ''}>
-            {outOfStock ? 'Stok yok' : `Stok: ${product.stock} ${product.unit}`}
+            {outOfStock ? 'Stok yok' : `Stok: ${formatStockApprox(product.stock)} ${product.unit}`}
           </span>
         </div>
 

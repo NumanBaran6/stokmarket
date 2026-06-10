@@ -157,6 +157,19 @@ const AdminPage = () => {
     }
   };
 
+  // --- Üye minimum sipariş ayrıcalığı değiştirme ---
+  const changePrivilege = async (member, moqPrivilege) => {
+    try {
+      await api.put(`/users/${member._id}/moq`, { moqPrivilege });
+      setMembers((list) =>
+        list.map((m) => (m._id === member._id ? { ...m, moqPrivilege } : m))
+      );
+      toast.success(`${member.shopName} → min sipariş ayrıcalığı güncellendi`);
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
   const handleFormChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: '' });
@@ -263,11 +276,12 @@ const AdminPage = () => {
                   <th>E-posta</th>
                   <th>Telefon</th>
                   <th>Seviye</th>
+                  <th>Min. Sipariş</th>
                 </tr>
               </thead>
               <tbody>
                 {members.length === 0 ? (
-                  <tr><td colSpan="5" className="text-muted">Henüz kayıtlı üye yok.</td></tr>
+                  <tr><td colSpan="6" className="text-muted">Henüz kayıtlı üye yok.</td></tr>
                 ) : (
                   members.map((m) => (
                     <tr key={m._id}>
@@ -284,6 +298,17 @@ const AdminPage = () => {
                           <option value="standard">Standart</option>
                           <option value="vip">VIP</option>
                           <option value="vip+">VIP+</option>
+                        </select>
+                      </td>
+                      <td data-label="Min. Sipariş">
+                        <select
+                          className="input"
+                          value={m.moqPrivilege || 'normal'}
+                          onChange={(e) => changePrivilege(m, e.target.value)}
+                        >
+                          <option value="normal">Normal</option>
+                          <option value="half">Yarısı kadar</option>
+                          <option value="none">Min. yok</option>
                         </select>
                       </td>
                     </tr>

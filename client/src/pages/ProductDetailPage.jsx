@@ -6,7 +6,7 @@ import { useCart } from '../context/CartContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import Spinner from '../components/Spinner.jsx';
 import { CrateIcon } from '../components/Logo.jsx';
-import { formatTL } from '../utils/format.js';
+import { formatTL, formatStockApprox } from '../utils/format.js';
 
 /**
  * Tek ürün detay sayfası.
@@ -87,7 +87,7 @@ const ProductDetailPage = () => {
             <li>Satış birimi: <strong>{product.unit}</strong></li>
             <li>Minimum sipariş: <strong>{product.moq} {product.unit}</strong></li>
             <li className={outOfStock ? 'text-danger' : ''}>
-              Stok durumu: <strong>{outOfStock ? 'Tükendi' : `${product.stock} ${product.unit}`}</strong>
+              Stok durumu: <strong>{outOfStock ? 'Tükendi' : `${formatStockApprox(product.stock)} ${product.unit}`}</strong>
             </li>
           </ul>
 

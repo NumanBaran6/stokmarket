@@ -93,5 +93,15 @@ productSchema.methods.priceForTier = function (tier) {
   return this.price;
 };
 
+/**
+ * Kullanıcının min sipariş ayrıcalığına göre geçerli minimum sipariş miktarını döndürür.
+ * none → 1, half → MOQ'nun yarısı (yukarı yuvarlanmış), normal → MOQ.
+ */
+productSchema.methods.moqForPrivilege = function (privilege) {
+  if (privilege === 'none') return 1;
+  if (privilege === 'half') return Math.max(1, Math.ceil(this.moq / 2));
+  return this.moq;
+};
+
 const Product = mongoose.model('Product', productSchema);
 export default Product;
