@@ -595,9 +595,9 @@ h2 {
   cursor: not-allowed;
 }
 .qty-input {
-  width: 56px;
+  width: 80px;
   text-align: center;
-  padding: 0.4rem;
+  padding: 0.4rem 0.5rem;
   border: 1.5px solid var(--c-border);
   border-radius: 0;
   font: inherit;

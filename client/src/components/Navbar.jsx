@@ -13,13 +13,14 @@ import { Logo } from './Logo.jsx';
  */
 const Navbar = () => {
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
-  const { totalItems } = useCart();
+  const { totalItems, clearCart } = useCart();
   const toast = useToast();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
+    clearCart();
     toast.info('Çıkış yapıldı.');
     navigate('/');
     setMenuOpen(false);

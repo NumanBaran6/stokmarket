@@ -349,21 +349,21 @@ export const seedDatabase = async () => {
     'Kabak': 'Antalya',
   };
 
-  // Yüksek minimum sipariş miktarları (toptan ölçek)
+  // Minimum sipariş miktarları (15-20 kasa civarı)
   const moqMap = {
-    'Kırmızı Elma': 25, 'Muz (İthal)': 20, 'Portakal (Sıkmalık)': 30, 'Çilek': 100,
-    'Sultani Üzüm': 25, 'Limon': 20, 'Mandalina': 25, 'Armut': 20, 'Kavun': 150,
-    'Nar': 18, 'Avokado': 15, 'Erik': 18, 'Domates (Sofralık)': 30, 'Salatalık': 25,
-    'Patates': 40, 'Kuru Soğan': 40, 'Kıvırcık Marul': 20, 'Maydanoz': 20,
-    'Sivri Biber': 20, 'Patlıcan': 20, 'Havuç': 30, 'Kabak': 20,
+    'Kırmızı Elma': 20, 'Muz (İthal)': 18, 'Portakal (Sıkmalık)': 20, 'Çilek': 20,
+    'Sultani Üzüm': 18, 'Limon': 16, 'Mandalina': 20, 'Armut': 15, 'Kavun': 15,
+    'Nar': 15, 'Avokado': 15, 'Erik': 16, 'Domates (Sofralık)': 20, 'Salatalık': 18,
+    'Patates': 20, 'Kuru Soğan': 20, 'Kıvırcık Marul': 15, 'Maydanoz': 15,
+    'Sivri Biber': 16, 'Patlıcan': 16, 'Havuç': 18, 'Kabak': 16,
   };
-  // Yüksek, tam olmayan stok miktarları (gösterimde "2000+" gibi yuvarlanır)
+  // Stok miktarları (50-1000 arası, tam olmayan; gösterimde "800+" gibi yuvarlanır)
   const stockMap = {
-    'Kırmızı Elma': 2340, 'Muz (İthal)': 1875, 'Portakal (Sıkmalık)': 3120, 'Çilek': 4260,
-    'Sultani Üzüm': 1940, 'Limon': 2275, 'Mandalina': 3080, 'Armut': 1660, 'Kavun': 6850,
-    'Nar': 1430, 'Avokado': 1180, 'Erik': 1290, 'Domates (Sofralık)': 3850, 'Salatalık': 2470,
-    'Patates': 3260, 'Kuru Soğan': 2980, 'Kıvırcık Marul': 1320, 'Maydanoz': 1610,
-    'Sivri Biber': 1740, 'Patlıcan': 1490, 'Havuç': 2550, 'Kabak': 1280,
+    'Kırmızı Elma': 840, 'Muz (İthal)': 560, 'Portakal (Sıkmalık)': 920, 'Çilek': 680,
+    'Sultani Üzüm': 470, 'Limon': 730, 'Mandalina': 610, 'Armut': 390, 'Kavun': 950,
+    'Nar': 280, 'Avokado': 175, 'Erik': 320, 'Domates (Sofralık)': 880, 'Salatalık': 540,
+    'Patates': 760, 'Kuru Soğan': 690, 'Kıvırcık Marul': 240, 'Maydanoz': 410,
+    'Sivri Biber': 360, 'Patlıcan': 295, 'Havuç': 580, 'Kabak': 330,
   };
 
   for (const p of productsData) {

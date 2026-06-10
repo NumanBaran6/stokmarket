@@ -60,8 +60,6 @@ const CatalogPage = () => {
           Sabahın ilk ışığında halden seçtiğimiz meyve ve sebzeler, aynı gün tezgâhınızda.
           Aradan komisyoncuyu çıkardık; doğrudan üreticiden, dalından koparılmış tazelikte
           kasanıza geliyor.
-          {user?.tier === 'vip' ? ' VIP bayi fiyatlarınız aktif.' : ''}
-          {user?.tier === 'vip+' ? ' VIP+ bayi fiyatlarınız aktif — en düşük fiyatlar sizde.' : ''}
         </p>
       </section>
 
