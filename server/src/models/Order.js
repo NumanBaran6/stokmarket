@@ -55,6 +55,11 @@ const orderSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
+    shippingFee: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
     deliveryDate: {
       type: Date,
       required: [true, 'Teslimat tarihi seçilmelidir.'],

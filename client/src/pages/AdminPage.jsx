@@ -36,6 +36,7 @@ const AdminPage = () => {
   const [categories, setCategories] = useState([]);
   const [members, setMembers] = useState([]);
   const [memberSearch, setMemberSearch] = useState('');
+  const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // Ürün form modalı
@@ -49,14 +50,16 @@ const AdminPage = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [p, c, u] = await Promise.all([
+      const [p, c, u, s] = await Promise.all([
         api.get('/products'),
         api.get('/categories'),
         api.get('/users'),
+        api.get('/orders/stats'),
       ]);
       setProducts(p.data.data);
       setCategories(c.data.data);
       setMembers(u.data.data);
+      setStats(s.data.data);
     } catch (err) {
       toast.error(err.message);
     } finally {
@@ -215,6 +218,12 @@ const AdminPage = () => {
         >
           Üyeler ({members.length})
         </button>
+        <button
+          className={`tab ${tab === 'stats' ? 'tab--active' : ''}`}
+          onClick={() => setTab('stats')}
+        >
+          Ciro
+        </button>
       </div>
 
       {/* ÜRÜNLER SEKMESİ */}
@@ -338,6 +347,64 @@ const AdminPage = () => {
                 })()}
               </tbody>
             </table>
+          </div>
+        </>
+      )}
+
+      {/* CİRO SEKMESİ */}
+      {tab === 'stats' && stats && (
+        <>
+          <div className="stat-cards">
+            <div className="card stat-card">
+              <span className="stat-card__label">Toplam Ciro</span>
+              <strong className="stat-card__value">{formatTL(stats.revenue)}</strong>
+              <span className="text-muted">iptaller hariç</span>
+            </div>
+            <div className="card stat-card">
+              <span className="stat-card__label">Toplam Sipariş</span>
+              <strong className="stat-card__value">{stats.orderCount}</strong>
+              <span className="text-muted">{stats.activeCount} aktif</span>
+            </div>
+            <div className="card stat-card">
+              <span className="stat-card__label">Ortalama Sipariş</span>
+              <strong className="stat-card__value">{formatTL(stats.avgOrder)}</strong>
+            </div>
+          </div>
+
+          <div className="stats-grid">
+            <div className="card">
+              <h3>Sipariş Durumları</h3>
+              <table className="table">
+                <tbody>
+                  {Object.entries(stats.byStatus).map(([s, n]) => (
+                    <tr key={s}>
+                      <td style={{ textTransform: 'capitalize' }}>{s}</td>
+                      <td className="text-right">{n}</td>
+                    </tr>
+                  ))}
+                  {Object.keys(stats.byStatus).length === 0 && (
+                    <tr><td className="text-muted">Henüz sipariş yok.</td></tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="card">
+              <h3>En Çok Ciro Yapan Ürünler</h3>
+              <table className="table">
+                <tbody>
+                  {stats.topProducts.map((p) => (
+                    <tr key={p.name}>
+                      <td>{p.name}</td>
+                      <td className="text-right">{formatTL(p.total)}</td>
+                    </tr>
+                  ))}
+                  {stats.topProducts.length === 0 && (
+                    <tr><td className="text-muted">Henüz veri yok.</td></tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </>
       )}

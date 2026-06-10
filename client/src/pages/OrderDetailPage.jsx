@@ -108,8 +108,16 @@ const OrderDetailPage = () => {
           </tbody>
           <tfoot>
             <tr>
+              <td colSpan="3" className="text-right">Ara Toplam</td>
+              <td>{formatTL(order.totalAmount)}</td>
+            </tr>
+            <tr>
+              <td colSpan="3" className="text-right">Kargo</td>
+              <td>{order.shippingFee ? formatTL(order.shippingFee) : 'Ücretsiz'}</td>
+            </tr>
+            <tr>
               <td colSpan="3" className="text-right"><strong>Genel Toplam</strong></td>
-              <td><strong>{formatTL(order.totalAmount)}</strong></td>
+              <td><strong>{formatTL(order.totalAmount + (order.shippingFee || 0))}</strong></td>
             </tr>
           </tfoot>
         </table>

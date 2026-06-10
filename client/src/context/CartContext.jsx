@@ -1,19 +1,27 @@
 import { createContext, useContext, useState, useEffect, useMemo } from 'react';
+import { useAuth } from './AuthContext.jsx';
 
 const CartContext = createContext(null);
 
 const STORAGE_KEY = 'numangida_cart';
 
 /**
- * Sepet (haftalık sipariş listesi) context'i.
- * Her kalem: { product, quantity }. product, katalogdan gelen ürün nesnesidir
- * (effectivePrice, moq, unit, stock alanlarını içerir).
+ * Sepet context'i. Sepet oturuma bağlıdır: giriş yoksa sepet boştur.
+ * Her kalem: { product, quantity }.
  */
 export const CartProvider = ({ children }) => {
+  const { isAuthenticated, loading } = useAuth();
   const [items, setItems] = useState([]);
 
-  // Açılışta sepeti geri yükle
+  // Oturum durumuna göre sepeti yükle veya temizle.
+  // Giriş yapılmamışsa sepet boştur ve depodan silinir.
   useEffect(() => {
+    if (loading) return;
+    if (!isAuthenticated) {
+      setItems([]);
+      localStorage.removeItem(STORAGE_KEY);
+      return;
+    }
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try {
@@ -22,12 +30,14 @@ export const CartProvider = ({ children }) => {
         localStorage.removeItem(STORAGE_KEY);
       }
     }
-  }, []);
+  }, [isAuthenticated, loading]);
 
-  // Değişiklikleri kalıcı kıl
+  // Değişiklikleri kalıcı kıl (yalnızca giriş yapılmışsa)
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-  }, [items]);
+    if (isAuthenticated) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    }
+  }, [items, isAuthenticated]);
 
   // Ürünü sepete ekle; varsa miktarı artır. Başlangıç miktarı MOQ kadardır.
   const addItem = (product, quantity) => {

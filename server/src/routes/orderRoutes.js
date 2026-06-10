@@ -3,6 +3,7 @@ import {
   createOrder,
   getOrders,
   getOrderById,
+  getOrderStats,
   updateOrderStatus,
   deleteOrder,
 } from '../controllers/orderController.js';
@@ -17,6 +18,9 @@ router
   .route('/')
   .get(getOrders)
   .post(authorize('customer'), createOrder);
+
+// İstatistik rotası /:id'den önce tanımlanmalı (çakışmayı önlemek için)
+router.get('/stats', authorize('admin'), getOrderStats);
 
 router.route('/:id').get(getOrderById).delete(deleteOrder);
 

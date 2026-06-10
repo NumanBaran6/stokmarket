@@ -75,10 +75,17 @@ export const createOrder = asyncHandler(async (req, res) => {
     });
   }
 
+  // Kargo ücreti: 5.000 ₺ ve üzeri siparişlerde ücretsiz, altında sabit ücret
+  const FREE_SHIPPING_THRESHOLD = 5000;
+  const SHIPPING_FEE = 350;
+  const subtotal = Math.round(totalAmount * 100) / 100;
+  const shippingFee = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
+
   const order = await Order.create({
     customer: req.user._id,
     items: orderItems,
-    totalAmount: Math.round(totalAmount * 100) / 100,
+    totalAmount: subtotal,
+    shippingFee,
     deliveryDate: date,
     note,
   });
@@ -89,6 +96,45 @@ export const createOrder = asyncHandler(async (req, res) => {
   }
 
   res.status(201).json({ success: true, data: order });
+});
+
+// @desc    Ciro ve sipariş istatistikleri (yönetici özeti)
+// @route   GET /api/orders/stats
+// @access  Private/Admin
+export const getOrderStats = asyncHandler(async (req, res) => {
+  const orders = await Order.find();
+
+  // İptal edilenler ciroya dahil edilmez
+  const aktif = orders.filter((o) => o.status !== 'iptal');
+  const revenue = aktif.reduce((sum, o) => sum + o.totalAmount + (o.shippingFee || 0), 0);
+
+  // Duruma göre dağılım
+  const byStatus = {};
+  for (const o of orders) byStatus[o.status] = (byStatus[o.status] || 0) + 1;
+
+  // En çok ciro yapan ürünler
+  const prodMap = {};
+  for (const o of aktif) {
+    for (const it of o.items) {
+      prodMap[it.name] = (prodMap[it.name] || 0) + it.quantity * it.priceAtOrder;
+    }
+  }
+  const topProducts = Object.entries(prodMap)
+    .map(([name, total]) => ({ name, total }))
+    .sort((a, b) => b.total - a.total)
+    .slice(0, 5);
+
+  res.json({
+    success: true,
+    data: {
+      revenue,
+      orderCount: orders.length,
+      activeCount: aktif.length,
+      avgOrder: aktif.length ? revenue / aktif.length : 0,
+      byStatus,
+      topProducts,
+    },
+  });
 });
 
 // @desc    Siparişleri listele (müşteri: kendi siparişleri, admin: tüm siparişler)

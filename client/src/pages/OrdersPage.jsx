@@ -65,7 +65,7 @@ const OrdersPage = () => {
                   {isAdmin && <td data-label="Bayi">{o.customer?.shopName || '-'}</td>}
                   <td data-label="Tarih">{formatDate(o.createdAt)}</td>
                   <td data-label="Teslimat">{formatDateShort(o.deliveryDate)}</td>
-                  <td data-label="Tutar">{formatTL(o.totalAmount)}</td>
+                  <td data-label="Tutar">{formatTL(o.totalAmount + (o.shippingFee || 0))}</td>
                   <td data-label="Durum">
                     <StatusBadge status={o.status} />
                   </td>

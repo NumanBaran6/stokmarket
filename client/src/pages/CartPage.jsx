@@ -19,6 +19,10 @@ const CartPage = () => {
   const toast = useToast();
   const navigate = useNavigate();
 
+  // Kargo: 5.000 ₺ ve üzeri ücretsiz, altında 350 ₺
+  const shipping = totalAmount >= 5000 ? 0 : 350;
+  const grandTotal = totalAmount + shipping;
+
   const [deliveryDate, setDeliveryDate] = useState('');
   const [note, setNote] = useState('');
   const [card, setCard] = useState({ number: '', name: '', expiry: '', cvv: '' });
@@ -251,9 +255,22 @@ const CartPage = () => {
             <span className="form-hint">Bu bilgiler yalnızca demo amaçlıdır, kaydedilmez.</span>
           </div>
 
+          <div className="cart-summary__row">
+            <span>Ara Toplam</span>
+            <span>{formatTL(totalAmount)}</span>
+          </div>
+          <div className="cart-summary__row">
+            <span>Kargo</span>
+            <span>{shipping === 0 ? 'Ücretsiz' : formatTL(shipping)}</span>
+          </div>
+          {shipping > 0 && (
+            <span className="form-hint">
+              5.000 ₺ ve üzeri siparişlerde kargo ücretsiz.
+            </span>
+          )}
           <div className="cart-summary__row cart-summary__row--total">
             <span>Toplam</span>
-            <strong>{formatTL(totalAmount)}</strong>
+            <strong>{formatTL(grandTotal)}</strong>
           </div>
 
           <button className="btn btn--primary btn--block" onClick={openConfirm}>
@@ -282,8 +299,8 @@ const CartPage = () => {
         }
       >
         <p>
-          <strong>{items.length}</strong> kalemden oluşan, toplam{' '}
-          <strong>{formatTL(totalAmount)}</strong> tutarındaki siparişi{' '}
+          <strong>{items.length}</strong> kalemden oluşan, kargo dahil toplam{' '}
+          <strong>{formatTL(grandTotal)}</strong> tutarındaki siparişi{' '}
           <strong>{formatDateShort(deliveryDate)}</strong> tarihine teslimat için onaylıyor musun?
         </p>
         <p className="text-muted">

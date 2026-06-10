@@ -64,7 +64,7 @@ const Navbar = () => {
             </NavLink>
           )}
 
-          {!isAdmin && (
+          {isAuthenticated && !isAdmin && (
             <NavLink to="/sepet" className="navbar__cart" onClick={closeMenu}>
               Sepet
               {totalItems > 0 && <span className="navbar__badge">{totalItems}</span>}
