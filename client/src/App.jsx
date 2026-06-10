@@ -5,6 +5,7 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 import CatalogPage from './pages/CatalogPage.jsx';
 import ProductDetailPage from './pages/ProductDetailPage.jsx';
+import ContactPage from './pages/ContactPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
 import CartPage from './pages/CartPage.jsx';
@@ -25,6 +26,7 @@ function App() {
           {/* Herkese açık sayfalar */}
           <Route path="/" element={<CatalogPage />} />
           <Route path="/urun/:id" element={<ProductDetailPage />} />
+          <Route path="/iletisim" element={<ContactPage />} />
           <Route path="/giris" element={<LoginPage />} />
           <Route path="/kayit" element={<RegisterPage />} />
 

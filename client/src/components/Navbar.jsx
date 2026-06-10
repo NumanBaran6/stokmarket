@@ -52,6 +52,10 @@ const Navbar = () => {
             Katalog
           </NavLink>
 
+          <NavLink to="/iletisim" onClick={closeMenu}>
+            İletişim
+          </NavLink>
+
           {isAuthenticated && (
             <NavLink to="/siparislerim" onClick={closeMenu}>
               Siparişlerim
