@@ -31,7 +31,7 @@ minimum sipariş miktarı (MOQ) ve **VIP bayi fiyatları** içeren **B2B** sipar
 
 ---
 
-## 📂 Proje Yapısı
+## Proje Yapısı
 
 ```
 .
@@ -67,7 +67,7 @@ minimum sipariş miktarı (MOQ) ve **VIP bayi fiyatları** içeren **B2B** sipar
 
 ---
 
-## 🚀 Kurulum ve Çalıştırma
+##  Kurulum ve Çalıştırma
 
 Gereksinim: **Node.js 18+** ve npm.
 
@@ -80,7 +80,7 @@ cp .env.example .env      # gerekirse değerleri düzenleyin
 npm run dev               # http://localhost:5001
 ```
 
-> 💡 `.env` içinde `MONGODB_URI` **boş** bırakılırsa, geliştirme ortamında otomatik olarak
+>  `.env` içinde `MONGODB_URI` **boş** bırakılırsa, geliştirme ortamında otomatik olarak
 > geçici (in-memory) bir veritabanı başlatılır ve örnek verilerle doldurulur. Böylece
 > proje **Atlas hesabı olmadan** da çalışır. Kalıcı veri için Atlas bağlantısı girin (aşağıda).
 
@@ -103,17 +103,17 @@ npm run seed
 
 ---
 
-## 👤 Demo Hesaplar
+## Demo Hesaplar
 
 | Rol | E-posta | Şifre |
 |-----|---------|-------|
-| 👑 Yönetici (Admin) | `admin@numangida.com` | `123456` |
-| ⭐ VIP Bayi | `vip@numangida.com` | `123456` |
-| 🛒 Standart Bayi | `bayi@numangida.com` | `123456` |
+| Yönetici (Admin) | `admin@numangida.com` | `123456` |
+|  VIP Bayi | `vip@numangida.com` | `123456` |
+|  Standart Bayi | `bayi@numangida.com` | `123456` |
 
 ---
 
-## 🔌 API Endpoint'leri
+##  API Endpoint'leri
 
 | Metot | Yol | Erişim | Açıklama |
 |-------|-----|--------|----------|
@@ -135,7 +135,7 @@ npm run seed
 
 ---
 
-## 📊 UML & Tasarım Dokümantasyonu
+## UML & Tasarım Dokümantasyonu
 
 - [Use-Case Diyagramı](docs/use-case-diagram.md)
 - [Activity Diyagramı](docs/activity-diagram.md)
@@ -144,7 +144,7 @@ npm run seed
 
 ---
 
-## 🖼️ Ekran Görüntüleri
+## Ekran Görüntüleri
 
 > Ekran görüntülerini `docs/screenshots/` klasörüne ekleyip aşağıya yerleştirin.
 
@@ -154,7 +154,7 @@ npm run seed
 
 ---
 
-## ☁️ Canlıya Alma (Deployment)
+## Canlıya Alma (Deployment)
 
 **Mimari:** Frontend → Vercel/Netlify · Backend → Render/Railway · Veritabanı → MongoDB Atlas
 
@@ -168,6 +168,6 @@ npm run seed
 
 ---
 
-## 📝 Lisans
+##  Lisans
 
 Bu proje BLG330 dönem projesi kapsamında eğitim amaçlı geliştirilmiştir.
